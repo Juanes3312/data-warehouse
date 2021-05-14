@@ -1,0 +1,27 @@
+header{
+    display:flex;
+    justify-content:space-between;
+    background-color: #1D72C2;
+}
+
+header a:link, a:visited ,a:active{
+    text-decoration:none;
+    color:#fff;
+    font-family: Open;
+}
+
+#header1 a h2{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+
+#header2{
+    display:flex;
+    align-items:center;
+}
+
+#header2  div p{
+    padding-left: 2.5vw;
+    color: #fff;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+   
