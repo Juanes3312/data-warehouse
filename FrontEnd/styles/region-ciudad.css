@@ -1,0 +1,88 @@
+header{
+    display:flex;
+    justify-content:space-between;
+    background-color: #1D72C2;
+}
+
+header a:link, a:visited ,a:active{
+    text-decoration:none;
+    color:#fff;
+    font-family: Open;
+}
+
+#header1 a h2{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+
+#header2{
+    display:flex;
+    align-items:center;
+}
+
+#header2  div p{
+    padding-left: 2.5vw;
+    color: #fff;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+
+.display-none{
+    display: none;
+}
+
+/* arbol */
+
+#aggPais{
+    display:
+}
+
+/* Remove default bullets */
+ul, #myUL {
+    list-style-type: none;
+}
+
+ul,li{
+    padding: 0.5vw;
+}
+
+li{
+    padding-left: 2vw;
+}
+
+  
+  /* Remove margins and padding from the parent ul */
+#myUL {
+    margin: 0;
+    padding-top: 6vw;
+    padding-left: 2vw;
+  }
+  
+  /* Style the caret/arrow */
+.caret {
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+  }
+  
+  /* Create the caret/arrow with a unicode, and style it */
+.caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+  }
+/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+.caret-down::before {
+    transform: rotate(90deg);
+  }
+
+.cajaPais{
+    display: flex;
+    flex-direction: row;
+}
+/* importantes */
+.display-none{
+    display: none;
+}
+
+.display-block{
+    display: block;
+}
