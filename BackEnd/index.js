@@ -35,8 +35,8 @@ server.get("/regiones", (req,res) =>{
 
 server.get("/paises/:id", (req,res) =>{
     let {id} = req.params;
-    console.log(req.params.id, 'soy el id')
-    console.log(id)
+    //console.log(req.params.id, 'soy el id')
+    //console.log(id)
     sequelize
       .query("SELECT * FROM `paises` WHERE `region_id` = ? ",{
         replacements : [id],
@@ -49,8 +49,8 @@ server.get("/paises/:id", (req,res) =>{
 
 server.get("/ciudades/:id", (req,res) =>{
     let id = req.params.id;
-    console.log(req.params.id, 'soy el id')
-    console.log(id)
+    //console.log(req.params.id, 'soy el id')
+    //console.log(id)
     sequelize
       .query("SELECT * FROM `ciudades` WHERE `pais_id` = ? ",{
         replacements : [id],
