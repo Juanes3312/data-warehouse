@@ -1,3 +1,7 @@
+*{
+    font-size: 1.5vw;
+}
+
 header{
     display:flex;
     justify-content:space-between;
@@ -25,18 +29,34 @@ header a:link, a:visited ,a:active{
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
 }
 
-.display-none{
-    display: none;
-}
+/* para agregar un pais*/
+
+
+
 
 /* arbol */
 
-#aggPais{
-    display:
+#cajaAggRegion{
+    position: absolute;
+    left: 75vw;
+    border: 1px solid black;
+    width: 10vw;
+    display:flex;
+    justify-content: center;
+}
+
+#cajaAggPais{
+    position: relative;
+    left: 62.4vw;
+    bottom: 3.3vw;
+    border: 1px solid black;
+    width: 10vw;
+    display:flex;
+    justify-content: center;
 }
 
 /* Remove default bullets */
-ul, #myUL {
+ul, #regiones, #pais {
     list-style-type: none;
 }
 
@@ -50,10 +70,44 @@ li{
 
   
   /* Remove margins and padding from the parent ul */
-#myUL {
+#editar, #eliminar{
+    position: relative;
+    left: 2vw;
+    bottom: 3.2vh;
+    border: 1px solid black;
+    width: 5vw;
+    display:flex;
+    justify-content: center;
+}
+
+#eliminar{
+    left: 6vh;
+    width: 7vw;
+}
+
+#paisNombre{
+    display: flex;
+}
+
+#paises{
+    margin: 0;
+    position: relative;
+    bottom: 2.5vw;
+    
+}
+
+#ciudades{
+    position: relative;
+    bottom: 6vh;
+}
+#region{
+    margin-bottom: 5vw;
+}
+
+#regiones{
     margin: 0;
     padding-top: 6vw;
-    padding-left: 2vw;
+    padding-left: 10vw;
   }
   
   /* Style the caret/arrow */
@@ -72,13 +126,42 @@ li{
 /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
 .caret-down::before {
     transform: rotate(90deg);
-  }
-
-.cajaPais{
-    display: flex;
-    flex-direction: row;
+    display: inline-block;
+    position: relative;
+    /*bottom:1.5vw;
+    right: 1.8vw;*/
 }
+
+
+
+/* agregar x cosa */
+#crearX{
+    position: absolute;
+    border: 1px solid black;
+    left: 40%;
+    top: 25%;
+    height: 42vh;
+    width: 25vw;
+    z-index: 99;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5vw;
+}
+
+
 /* importantes */
+.blur{
+    filter: blur(2px);
+}
+
+.none-blur{
+    filter: blur(0);
+}
+.display-flex{
+    display:flex;
+}
+
 .display-none{
     display: none;
 }

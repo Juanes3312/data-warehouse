@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,8 +8,9 @@
     <title>Document</title>
     <link rel="stylesheet" href="../styles/region-ciudad.css">
 </head>
+
 <body>
-    <header>
+    <header id="header">
         <div id="header1">
             <a href="index.html" id="logo">
                 <h2>LOGO</h2>
@@ -29,30 +31,67 @@
             </div>
         </div>
     </header>
+    <div id="crearX" class="display-none">
+        <p>Desea agregar un pais?</p>
+        <input type="agg" id="resCrearX">
+        <div id="btnCrearX">
+            <p>Enviar</p>
+        </div>
+    </div>
 
-    <div>
-        <ul id="myUL">
-            
-            <p id="aggPais">Agrega un pais</p>
-            <li><span class="caret">Sudamerica</span>
-                <ul class="display-none" id="myUl">
-                    <li><span class="caret">Argentina</span>
-                        <ul class="display-none">
+    <div id="arbolDeRegiones">
+        <div id="crear" class="display-none">
+            <p id="pregunta">Que pais desea agregar?</p>
+            <input type="agg" id="respuesta">
+        </div>
+        <div id="cajaAggRegion">
+            <p>Agregar Region</p>
+        </div>
+        <ul id="regiones">
+            <li id="region"><span class="caret">Sudamerica</span>
+                <div id="cajaAggPais" class="aggPais">
+                    <p>Agrega un pais</p>
+                </div>
+                <ul class="display-none paises" id="paises">
+                    <li id="pais"><span class="caret" id="paisNombre">Argentina <p id="editar">editar</p><p id="eliminar">eliminar</p></span>
+                        <ul class="display-none" id="ciudades">
                             <li>Buenos aires</li>
                             <li>Cordoba</li>
                         </ul>
                     </li>
-                    <li><span class="caret">Colombia</span>
-                        <ul class="display-none">
+                    <li id="pais"><span class="caret" id="paisNombre">Colombia <p id="editar">editar</p></span>
+                        <ul class="display-none" id='ciudad'>
                             <li>Medellin</li>
                             <li>Bogota</li>
                         </ul>
                     </li>
                 </ul>
-
+            </li>
+            <li id="region"><span class="caret">Norteamerica
+                
+            </span>
+            <div id="cajaAggPais" class="aggPais">
+                <p id="aggPais">Agrega un pais</p>
+            </div>
+                <ul class="display-none paises" id="paises">
+                    <li id="pais"><span class="caret" id="paisNombre">Argentina <p id="editar">editar</p></span>
+                        
+                        <ul class="display-none" id="ciudades">
+                            <li>Buenos aires</li>
+                            <li>Cordoba</li>
+                        </ul>
+                    </li>
+                    <li id="pais"><span class="caret" id="paisNombre">Colombia <p id="editar">editar</p></span>
+                        <ul class="display-none" id='ciudad'>
+                            <li>Medellin</li>
+                            <li>Bogota</li>
+                        </ul>
+                    </li>
+                </ul>
             </li>
         </ul>
     </div>
 </body>
 <script src="../script/region-ciudad.js"></script>
+
 </html>
