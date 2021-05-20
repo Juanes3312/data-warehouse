@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 20, 2021 at 02:02 AM
--- Server version: 10.4.16-MariaDB
--- PHP Version: 7.4.12
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 21-05-2021 a las 01:55:07
+-- Versión del servidor: 10.4.19-MariaDB
+-- Versión de PHP: 8.0.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `data_warehouse`
+-- Base de datos: `data_warehouse`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ciudades`
+-- Estructura de tabla para la tabla `ciudades`
 --
 
 CREATE TABLE `ciudades` (
@@ -34,19 +34,22 @@ CREATE TABLE `ciudades` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `ciudades`
+-- Volcado de datos para la tabla `ciudades`
 --
 
 INSERT INTO `ciudades` (`id`, `pais_id`, `nombre`) VALUES
 (1, 1, 'Buenos Aires'),
 (2, 1, 'Cordoba'),
 (3, 2, 'Medellin'),
-(4, 2, 'Bogota');
+(4, 2, 'Bogota'),
+(5, 5, 'Lima'),
+(6, 5, 'Cuzco'),
+(7, 1, 'Rosario');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `paises`
+-- Estructura de tabla para la tabla `paises`
 --
 
 CREATE TABLE `paises` (
@@ -56,21 +59,20 @@ CREATE TABLE `paises` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `paises`
+-- Volcado de datos para la tabla `paises`
 --
 
 INSERT INTO `paises` (`id`, `region_id`, `nombre`) VALUES
 (1, 1, 'Argentina'),
 (2, 1, 'Colombia'),
-(3, 2, 'no se que'),
-(4, 2, 'no se que'),
-(5, 1, 'peru'),
-(6, 2, 'ciudad de mexico');
+(4, 2, 'Estados unidos'),
+(5, 1, 'Peru'),
+(6, 2, 'Mexico');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `regiones`
+-- Estructura de tabla para la tabla `regiones`
 --
 
 CREATE TABLE `regiones` (
@@ -79,7 +81,7 @@ CREATE TABLE `regiones` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `regiones`
+-- Volcado de datos para la tabla `regiones`
 --
 
 INSERT INTO `regiones` (`id`, `nombre`) VALUES
@@ -87,63 +89,63 @@ INSERT INTO `regiones` (`id`, `nombre`) VALUES
 (2, 'Norteamerica');
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `ciudades`
+-- Indices de la tabla `ciudades`
 --
 ALTER TABLE `ciudades`
   ADD PRIMARY KEY (`id`),
   ADD KEY `pais_id` (`pais_id`);
 
 --
--- Indexes for table `paises`
+-- Indices de la tabla `paises`
 --
 ALTER TABLE `paises`
   ADD PRIMARY KEY (`id`),
   ADD KEY `region_id` (`region_id`);
 
 --
--- Indexes for table `regiones`
+-- Indices de la tabla `regiones`
 --
 ALTER TABLE `regiones`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `ciudades`
+-- AUTO_INCREMENT de la tabla `ciudades`
 --
 ALTER TABLE `ciudades`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `paises`
+-- AUTO_INCREMENT de la tabla `paises`
 --
 ALTER TABLE `paises`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `regiones`
+-- AUTO_INCREMENT de la tabla `regiones`
 --
 ALTER TABLE `regiones`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `ciudades`
+-- Filtros para la tabla `ciudades`
 --
 ALTER TABLE `ciudades`
   ADD CONSTRAINT `ciudades_ibfk_1` FOREIGN KEY (`pais_id`) REFERENCES `paises` (`id`);
 
 --
--- Constraints for table `paises`
+-- Filtros para la tabla `paises`
 --
 ALTER TABLE `paises`
   ADD CONSTRAINT `paises_ibfk_1` FOREIGN KEY (`region_id`) REFERENCES `regiones` (`id`);
