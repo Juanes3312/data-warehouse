@@ -23,6 +23,46 @@ server.post('/paises',(req,res) =>{
     })
 })
 
+server.get("/regiones", (req,res) =>{
+    sequelize
+      .query("SELECT * FROM regiones", {
+        type: sequelize.QueryTypes.SELECT
+      })
+      .then(results => {
+        res.json(results);
+      });
+})
+
+server.get("/paises/:id", (req,res) =>{
+    let {id} = req.params;
+    console.log(req.params.id, 'soy el id')
+    console.log(id)
+    sequelize
+      .query("SELECT * FROM `paises` WHERE `region_id` = ? ",{
+        replacements : [id],
+        type: sequelize.QueryTypes.SELECT
+      })
+      .then(results => {
+        res.json(results);
+      });
+})
+
+server.get("/ciudades/:id", (req,res) =>{
+    let id = req.params.id;
+    console.log(req.params.id, 'soy el id')
+    console.log(id)
+    sequelize
+      .query("SELECT * FROM `ciudades` WHERE `region_id` = ? ",{
+        replacements : [id],
+        type: sequelize.QueryTypes.SELECT
+      })
+      .then(results => {
+        res.json(results);
+      });
+})
+
+
+
 server.listen(4000, function () {
     console.log('ya estoy corriendo mi bro en el 4000')
 });
