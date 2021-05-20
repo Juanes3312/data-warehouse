@@ -1,4 +1,4 @@
-let toggler = document.getElementsByClassName("caret");
+
 let region = document.getElementById("region")
 let btnaggpais = document.getElementsByClassName("aggPais");
 let paises = document.getElementsByClassName('paises')
@@ -7,13 +7,9 @@ let arbolDeRegiones = document.getElementById('arbolDeRegiones')
 const header = document.getElementById('header');
 const btnAggX = document.getElementById('btnCrearX')
 const resAggX = document.getElementById('resCrearX');
-for (let i = 0; i < toggler.length; i++) {
-  toggler[i].addEventListener("click", function() {
-    this.parentElement.querySelector(".display-none").classList.toggle("display-block");
-    this.classList.toggle("caret-down");
-  });
-}
-//console.log(btnaggpais)
+
+
+//funcion que guarda el pais agregado en la base de datos
 function guardarPais(region_id, nombre){
   const nuevoPais = {
     "region_id": region_id,
@@ -35,6 +31,7 @@ function guardarPais(region_id, nombre){
   })
 }
 
+//funcion que trae las regiones
 async function fetchRegiones(){
   let url = 'http://localhost:4000/regiones';
     let response = await fetch(url);
@@ -42,16 +39,19 @@ async function fetchRegiones(){
     return json;
 }
 
-async function fetchCiudades(num){
-  const paramsFetch = {
-    method: "GET",
-    headers:{
-      'Content-Type': 'application/json'
-    },
-    json: true, 
-  }
+//funcion que trae los paises segun la region
+async function fetchPaises(num){
   let url = 'http://localhost:4000/paises/' + num;
-    let response = await fetch(url, paramsFetch);
+    let response = await fetch(url, );
+    let json = await response.json();
+    console.log(json);
+    return json;
+}
+
+//funciones que trae las ciudad de la base datos segun la paises
+async function fetchCiudades(num){
+  let url = 'http://localhost:4000/ciudades/' + num;
+    let response = await fetch(url, );
     let json = await response.json();
     console.log(json);
     return json;
@@ -62,31 +62,69 @@ async function agregarArbol(){
   console.log(regiones);
   let ulRegiones = document.createElement('ul');
   ulRegiones.setAttribute('id', 'regiones');
+  arbolDeRegiones.appendChild(ulRegiones);
   for(i=0; i < regiones.length; i++){
     let liRegion = document.createElement("li")
+    liRegion.setAttribute('id', 'region');
+    ulRegiones.appendChild(liRegion);
+    let spanRegion = document.createElement('span');
+    spanRegion.classList.add("caret");
+    spanRegion.innerHTML = regiones[i].nombre;
+    liRegion.appendChild(spanRegion);
+    let divAggP = document.createElement("div");
+    divAggP.setAttribute('id', "cajaAggPais");
+    divAggP.classList.add("aggPais");
+    liRegion.appendChild(divAggP);
+    let pAggP = document.createElement("p");
+    pAggP.innerHTML = 'Agrega un pais';
+    divAggP.appendChild(pAggP);
+    let ulPaises = document.createElement("ul");
+    ulPaises.classList.add('display-none', 'paises');
+    ulPaises.setAttribute('id', 'paises');
+    liRegion.appendChild(ulPaises);
+    let paises = await fetchPaises(i+1);
+    for(e=0; e<paises.length; e++){
+      let liPaises = document.createElement('li');
+      liPaises.setAttribute("id","pais");
+      ulPaises.appendChild(liPaises);
+      let spanPais = document.createElement("span");
+      spanPais.classList.add('caret')
+      spanPais.setAttribute("id", "paisNombre");
+      liPaises.appendChild(spanPais);
+      spanPais.innerHTML= paises[0].nombre;
+
+    }
+    
     fetchCiudades(i+1);
   }
 }
 
 agregarArbol();
 
-
+//for que crea la caja donde se va agregar el pais
 for(let i = 0 ; i < btnaggpais.length; i++){
   btnaggpais[i].addEventListener("click", function(){
-    //console.log(this.nextElementSibling, " hey");
-    let li = document.createElement('li');
-    let span = document.createElement('span');
-    span.innerHTML = 'Panama';
-    li.appendChild(span);
-    this.nextElementSibling.appendChild(li);// agrega el pais donde lo pones
-    span.classList.add('caret');
+    //let li = document.createElement('li');
+    //let span = document.createElement('span');
+    //span.classList.add('caret');
     cajaAgg.classList.toggle('display-none');
     cajaAgg.classList.toggle('display-flex');
     header.classList.add('blur');
     arbolDeRegiones.classList.add('blur');
+    // funcion que guarda el pais en la base datos
     btnAggX.addEventListener("click", function(){
       nombre = resAggX.value;
       guardarPais(i+1,nombre);
     })
   })
+}
+let toggler = document.getElementsByClassName("caret");
+// funcion que hace funcionar las flechitas
+console.log(toggler);
+for (let i = 0; i < toggler.length; i++) {
+  toggler[i].addEventListener("click", function() {
+    console.log("oe")
+    this.parentElement.querySelector(".display-none").classList.toggle("display-block");
+    this.classList.toggle("caret-down");
+  });
 }

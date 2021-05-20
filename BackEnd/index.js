@@ -52,7 +52,7 @@ server.get("/ciudades/:id", (req,res) =>{
     console.log(req.params.id, 'soy el id')
     console.log(id)
     sequelize
-      .query("SELECT * FROM `ciudades` WHERE `region_id` = ? ",{
+      .query("SELECT * FROM `ciudades` WHERE `pais_id` = ? ",{
         replacements : [id],
         type: sequelize.QueryTypes.SELECT
       })
