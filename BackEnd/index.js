@@ -57,6 +57,7 @@ server.get("/ciudades/:id", (req,res) =>{
         type: sequelize.QueryTypes.SELECT
       })
       .then(results => {
+        console.log(results, "soy result", id)
         res.json(results);
       });
 })

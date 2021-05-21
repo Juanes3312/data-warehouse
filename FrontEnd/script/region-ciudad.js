@@ -58,17 +58,20 @@ async function fetchCiudades(num) {
 
 async function agregarArbol() {
   let regiones = await fetchRegiones();
-  //console.log(regiones);
+  debugger;
+  console.log(regiones);
   let ulRegiones = document.createElement('ul');
   ulRegiones.setAttribute('id', 'regiones');
   arbolDeRegiones.appendChild(ulRegiones);
   for (let i = 0; i < regiones.length; i++) {
+    const currentRegion = regiones[i];
+
     let liRegion = document.createElement("li")
     liRegion.setAttribute('id', 'region');
     ulRegiones.appendChild(liRegion);
     let spanRegion = document.createElement('span');
     spanRegion.classList.add("caret");
-    spanRegion.innerHTML = regiones[i].nombre;
+    spanRegion.innerHTML = currentRegion.nombre;
     liRegion.appendChild(spanRegion);
     let divAggP = document.createElement("div");
     divAggP.setAttribute('id', "cajaAggPais");
@@ -81,18 +84,19 @@ async function agregarArbol() {
     ulPaises.classList.add('display-none', 'paises');
     ulPaises.setAttribute('id', 'paises');
     liRegion.appendChild(ulPaises);
-    let pais = await fetchPaises(i+1);
-    console.log(regiones[i])
+    let pais = await fetchPaises(currentRegion.id);
+   
     for (let e = 0; e < pais.length; e++) {
+      const currentPais = pais[e];
         let liPaises = document.createElement('li');
         liPaises.setAttribute("id", "pais");
-        liPaises.setAttribute("data", pais[e].id)
+        liPaises.setAttribute("data", currentPais.id)
         ulPaises.appendChild(liPaises);
         let spanPais = document.createElement("span");
         spanPais.classList.add('caret')
         spanPais.setAttribute("id", "paisNombre");
         liPaises.appendChild(spanPais);
-        spanPais.innerHTML = pais[e].nombre;
+        spanPais.innerHTML = currentPais.nombre;
         let pEditar = document.createElement("p");
         pEditar.setAttribute("id", "editar");
         pEditar.innerHTML = "Editar";
@@ -104,8 +108,8 @@ async function agregarArbol() {
         let ulCiudades = document.createElement("ul");
         ulCiudades.classList.add('display-none', 'ciudades');
         ulCiudades.setAttribute('id', 'ciudades');
-        console.log("argentinaaaaaaaaaaaaaaaaa", pais[e].nombre)
-        let ciudad = await fetchCiudades(e);
+        console.log("argentinaaaaaaaaaaaaaaaaa", currentPais.nombre)
+        let ciudad = await fetchCiudades(currentPais.id);
         console.log(pais[e],"soy pais e arriba")
         for (let j = 0; j < ciudad.length; j++) {
           console.log("estoy poniendo las ciudades de", pais[e].nombre);
@@ -144,26 +148,29 @@ async function agregarArbol() {
       this.classList.toggle("caret-down");
     });
   }
+  crearListenerAggPais();
 }
 
 agregarArbol();
 
 //for que crea la caja donde se va agregar el pais
-for (let i = 0; i < btnaggpais.length; i++) {
-  btnaggpais[i].addEventListener("click", function () {
-    //let li = document.createElement('li');
-    //let span = document.createElement('span');
-    //span.classList.add('caret');
-    cajaAgg.classList.toggle('display-none');
-    cajaAgg.classList.toggle('display-flex');
-    header.classList.add('blur');
-    arbolDeRegiones.classList.add('blur');
-    // funcion que guarda el pais en la base datos
-    btnAggX.addEventListener("click", function () {
-      nombre = resAggX.value;
-      guardarPais(i + 1, nombre);
+function crearListenerAggPais(){
+  for (let i = 0; i < btnaggpais.length; i++) {
+    btnaggpais[i].addEventListener("click", function () {
+      //let li = document.createElement('li');
+      //let span = document.createElement('span');
+      //span.classList.add('caret');
+      cajaAgg.classList.toggle('display-none');
+      cajaAgg.classList.toggle('display-flex');
+      header.classList.add('blur');
+      arbolDeRegiones.classList.add('blur');
+      // funcion que guarda el pais en la base datos
+      btnAggX.addEventListener("click", function () {
+        nombre = resAggX.value;
+        guardarPais(i + 1, nombre);
+      })
     })
-  })
+  }
 }
 let toggler = document.getElementsByClassName("caret");
 // funcion que hace funcionar las flechitas
