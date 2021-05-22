@@ -8,7 +8,7 @@ const signature = 'ju4n3s'
 server.use(cors());
 server.use(express.json());
 server.use(compression());
-
+//guardar un pais nuevo
 server.post('/paises',(req,res) =>{
     const {region_id,nombre} = req.body;
     console.log(region_id, nombre)
@@ -23,6 +23,22 @@ server.post('/paises',(req,res) =>{
     })
 })
 
+//guardar region nueva
+server.post('/regiones',(req,res) =>{
+  const {nombre} = req.body;
+  sequelize.query("INSERT INTO regiones (nombre) VALUE(?)",{
+      replacements:[nombre],
+      type:sequelize.QueryTypes.INSERT
+  })
+  .then(()=>{
+      res.status(200).json({
+          mensaje: "todo correcto mi pana"
+      })
+  })
+})
+
+
+//extraer todas las regiones
 server.get("/regiones", (req,res) =>{
     sequelize
       .query("SELECT * FROM regiones", {
@@ -33,6 +49,7 @@ server.get("/regiones", (req,res) =>{
       });
 })
 
+//extraer paises segun la region
 server.get("/paises/:id", (req,res) =>{
     let {id} = req.params;
     //console.log(req.params.id, 'soy el id')
@@ -47,6 +64,7 @@ server.get("/paises/:id", (req,res) =>{
       });
 })
 
+//extraer la ciudad segun el pais
 server.get("/ciudades/:id", (req,res) =>{
     let id = req.params.id;
     //console.log(req.params.id, 'soy el id')

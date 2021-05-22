@@ -26,6 +26,34 @@ function guardarPais(region_id, nombre) {
     .then(response => response.json())
     .then((data) => {
       console.log(data);
+      document.location.reload();
+    })
+    .catch(error =>{
+      console.log(error)
+    })
+}
+
+function guardarRegion(nombre) {
+  const nuevoPais = {
+    "nombre": nombre,
+  }
+  const parametros = {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(nuevoPais),
+    json: true,
+  }
+  console.log(parametros.body);
+  fetch(`http://localhost:4000/regiones`, parametros)
+    .then(response => response.json())
+    .then((data) => {
+      console.log(data);
+      document.location.reload();
+    })
+    .catch(error =>{
+      console.log(error)
     })
 }
 
@@ -58,42 +86,42 @@ async function fetchCiudades(num) {
 
 async function agregarArbol() {
   let regiones = await fetchRegiones();
-  debugger;
   console.log(regiones);
   let ulRegiones = document.createElement('ul');
   ulRegiones.setAttribute('id', 'regiones');
   arbolDeRegiones.appendChild(ulRegiones);
   for (let i = 0; i < regiones.length; i++) {
     const currentRegion = regiones[i];
-
-    let liRegion = document.createElement("li")
+    let liRegion = document.createElement("details")
     liRegion.setAttribute('id', 'region');
     ulRegiones.appendChild(liRegion);
-    let spanRegion = document.createElement('span');
-    spanRegion.classList.add("caret");
+    let spanRegion = document.createElement('summary');
+    spanRegion.classList.add("care");
     spanRegion.innerHTML = currentRegion.nombre;
     liRegion.appendChild(spanRegion);
+    liRegion.setAttribute('data', currentRegion.id )
     let divAggP = document.createElement("div");
     divAggP.setAttribute('id', "cajaAggPais");
     divAggP.classList.add("aggPais");
+    divAggP.setAttribute('data', currentRegion.id)
     liRegion.appendChild(divAggP);
     let pAggP = document.createElement("p");
     pAggP.innerHTML = 'Agrega un pais';
     divAggP.appendChild(pAggP);
     let ulPaises = document.createElement("ul");
-    ulPaises.classList.add('display-none', 'paises');
+    ulPaises.classList.add('display-non', 'paises');
     ulPaises.setAttribute('id', 'paises');
     liRegion.appendChild(ulPaises);
     let pais = await fetchPaises(currentRegion.id);
    
     for (let e = 0; e < pais.length; e++) {
       const currentPais = pais[e];
-        let liPaises = document.createElement('li');
+        let liPaises = document.createElement('details');
         liPaises.setAttribute("id", "pais");
         liPaises.setAttribute("data", currentPais.id)
         ulPaises.appendChild(liPaises);
-        let spanPais = document.createElement("span");
-        spanPais.classList.add('caret')
+        let spanPais = document.createElement("summary");
+        spanPais.classList.add('care')
         spanPais.setAttribute("id", "paisNombre");
         liPaises.appendChild(spanPais);
         spanPais.innerHTML = currentPais.nombre;
@@ -106,27 +134,23 @@ async function agregarArbol() {
         pEliminar.innerHTML = "Eliminar";
         spanPais.appendChild(pEliminar);
         let ulCiudades = document.createElement("ul");
-        ulCiudades.classList.add('display-none', 'ciudades');
+        ulCiudades.classList.add('display-non', 'ciudades');
         ulCiudades.setAttribute('id', 'ciudades');
-        console.log("argentinaaaaaaaaaaaaaaaaa", currentPais.nombre)
         let ciudad = await fetchCiudades(currentPais.id);
-        console.log(pais[e],"soy pais e arriba")
         for (let j = 0; j < ciudad.length; j++) {
           console.log("estoy poniendo las ciudades de", pais[e].nombre);
           //console.log('entre2')
-          let liCiudades = document.createElement('li');
+          let liCiudades = document.createElement('ul');
           liCiudades.setAttribute("data", ciudad[j].id)
           liCiudades.setAttribute("id", "ciudad");
           ulCiudades.appendChild(liCiudades);
           liPaises.appendChild(ulCiudades);
           let spanCiudad = document.createElement("span");
-            spanCiudad.classList.add('caret')
+            spanCiudad.classList.add('care')
             spanCiudad.setAttribute("id", "paisNombre");
             liCiudades.appendChild(spanCiudad);
             if(ciudad[j]){
               spanCiudad.innerHTML = ciudad[j].nombre;
-              //console.log(pais[e], "soy pais[e]");
-              //console.log(ciudad[j], "soy ciudades[j].pais_id")
             }
             let pEditar = document.createElement("p");
             pEditar.setAttribute("id", "editar");
@@ -141,13 +165,6 @@ async function agregarArbol() {
       
     }
   }
-  for (let i = 0; i < toggler.length; i++) {
-    toggler[i].addEventListener("click", function clickArbol() {
-      console.log("oe")
-      this.parentElement.querySelector(".display-none").classList.toggle("display-block");
-      this.classList.toggle("caret-down");
-    });
-  }
   crearListenerAggPais();
 }
 
@@ -157,9 +174,7 @@ agregarArbol();
 function crearListenerAggPais(){
   for (let i = 0; i < btnaggpais.length; i++) {
     btnaggpais[i].addEventListener("click", function () {
-      //let li = document.createElement('li');
-      //let span = document.createElement('span');
-      //span.classList.add('caret');
+      console.log(btnaggpais[i].getAttribute('data'), "hola")
       cajaAgg.classList.toggle('display-none');
       cajaAgg.classList.toggle('display-flex');
       header.classList.add('blur');
@@ -167,18 +182,15 @@ function crearListenerAggPais(){
       // funcion que guarda el pais en la base datos
       btnAggX.addEventListener("click", function () {
         nombre = resAggX.value;
-        guardarPais(i + 1, nombre);
+        guardarPais(btnaggpais[i].getAttribute('data'), nombre);
+
       })
     })
   }
 }
-let toggler = document.getElementsByClassName("caret");
-// funcion que hace funcionar las flechitas
-//console.log(toggler);
-for (let i = 0; i < toggler.length; i++) {
-  toggler[i].addEventListener("click", function clickArbol() {
-    console.log("oe")
-    this.parentElement.querySelector(".display-none").classList.toggle("display-block");
-    this.classList.toggle("caret-down");
-  });
+
+function crearListenerAggRegion(){
+  
 }
+
+

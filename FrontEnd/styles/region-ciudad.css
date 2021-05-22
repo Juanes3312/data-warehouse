@@ -47,8 +47,9 @@ header a:link, a:visited ,a:active{
 
 #cajaAggPais{
     position: relative;
-    left: 62.4vw;
-    bottom: 3.3vw;
+    display: inline-block;
+    left: 64.5vw;
+    bottom: 2.8vh;
     border: 1px solid black;
     width: 10vw;
     display:flex;
@@ -73,32 +74,31 @@ li{
 #editar, #eliminar{
     position: relative;
     left: 2vw;
-    bottom: 3.2vh;
+    
     border: 1px solid black;
     width: 5vw;
-    display:flex;
+    display:inline-block;
     justify-content: center;
 }
 
 #eliminar{
-    left: 6vh;
+    display: inline-block;
+    left: 3vw;
     width: 7vw;
-}
-
-#paisNombre{
-    display: flex;
+    
 }
 
 #paises{
     margin: 0;
     position: relative;
     bottom: 2.5vw;
-    
+    left: 2.5vw;
 }
 
 #ciudades{
     position: relative;
     bottom: 6vh;
+    left: 3vw;
 }
 #region{
     margin-bottom: 5vw;
