@@ -38,9 +38,9 @@ header a:link, a:visited ,a:active{
 
 #cajaAggRegion{
     position: absolute;
-    left: 75vw;
+    left: 70vw;
     border: 1px solid black;
-    width: 10vw;
+    width: 20vw;
     display:flex;
     justify-content: center;
 }

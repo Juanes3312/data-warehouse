@@ -1,5 +1,6 @@
 let region = document.getElementById("region")
 let btnaggpais = document.getElementsByClassName("aggPais");
+let btnAggRegion = document.getElementById('cajaAggRegion')
 let paises = document.getElementsByClassName('paises')
 let cajaAgg = document.getElementById('crearX');
 let arbolDeRegiones = document.getElementById('arbolDeRegiones')
@@ -33,6 +34,8 @@ function guardarPais(region_id, nombre) {
     })
 }
 
+
+
 function guardarRegion(nombre) {
   const nuevoPais = {
     "nombre": nombre,
@@ -57,12 +60,47 @@ function guardarRegion(nombre) {
     })
 }
 
+/*function EliminarPais(id) {
+  const parametros = {
+    method: "DELETE",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    json: true,
+  }
+  console.log(parametros.body);
+  fetch(`http://localhost:4000/paises`, parametros)
+    .then(response => response.json())
+    .then((data) => {
+      console.log(data);
+      document.location.reload();
+    })
+    .catch(error =>{
+      console.log(error)
+    })
+}*/
+
 //funcion que trae las regiones
 async function fetchRegiones() {
   let url = 'http://localhost:4000/regiones';
   let response = await fetch(url);
   let json = await response.json();
   console.log(json)
+  return json;
+}
+
+async function deletePaises(num) {
+  const parametros = {
+    method: "DELETE",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    json: true,
+  }
+  let url = 'http://localhost:4000/paises/' + num;
+  let response = await fetch(url,parametros);
+  let json = await response.json();
+  document.location.reload();
   return json;
 }
 
@@ -100,14 +138,14 @@ async function agregarArbol() {
     spanRegion.innerHTML = currentRegion.nombre;
     liRegion.appendChild(spanRegion);
     liRegion.setAttribute('data', currentRegion.id )
-    let divAggP = document.createElement("div");
-    divAggP.setAttribute('id', "cajaAggPais");
-    divAggP.classList.add("aggPais");
-    divAggP.setAttribute('data', currentRegion.id)
-    liRegion.appendChild(divAggP);
+    let buttonAggP = document.createElement("button");
+    buttonAggP.setAttribute('id', "cajaAggPais");
+    buttonAggP.classList.add("aggPais");
+    buttonAggP.setAttribute('data', currentRegion.id)
+    liRegion.appendChild(buttonAggP);
     let pAggP = document.createElement("p");
     pAggP.innerHTML = 'Agrega un pais';
-    divAggP.appendChild(pAggP);
+    buttonAggP.appendChild(pAggP);
     let ulPaises = document.createElement("ul");
     ulPaises.classList.add('display-non', 'paises');
     ulPaises.setAttribute('id', 'paises');
@@ -189,8 +227,24 @@ function crearListenerAggPais(){
   }
 }
 
+console.log(btnAggRegion)
 function crearListenerAggRegion(){
-  
+  btnAggRegion.addEventListener("click", function(){
+    cajaAgg.classList.toggle('display-none');
+    cajaAgg.classList.toggle('display-flex');
+    cajaAgg.children[0].innerHTML = "Que region desea agregar?"
+    header.classList.add('blur');
+    arbolDeRegiones.classList.add('blur');
+    console.log("hols")
+    // funcion que guarda el pais en la base datos
+    btnAggX.addEventListener("click", function () {
+      nombre = resAggX.value;
+      guardarRegion( nombre);
+
+    })
+  })
+
 }
 
+crearListenerAggRegion();
 

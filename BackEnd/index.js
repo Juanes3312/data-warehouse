@@ -23,6 +23,21 @@ server.post('/paises',(req,res) =>{
     })
 })
 
+//eliminar un pais
+server.delete("/paises/:id", (req,res) =>{
+  let {id} = req.params;
+  //console.log(req.params.id, 'soy el id')
+  //console.log(id)
+  sequelize
+    .query("DELETE * FROM `paises` WHERE `id` = ? ",{
+      replacements : [id],
+      type: sequelize.QueryTypes.DELETE
+    })
+    .then(results => {
+      res.json(results);
+    });
+})
+
 //guardar region nueva
 server.post('/regiones',(req,res) =>{
   const {nombre} = req.body;
