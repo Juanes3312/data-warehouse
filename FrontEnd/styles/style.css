@@ -20,10 +20,11 @@ header a:link, a:visited ,a:active{
     align-items:center;
 }
 
-#header2  div p{
+#header2  div a{
     padding-left: 2.5vw;
     color: #fff;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding-right: 1vw;
 }
 /* estilos login*/
 .login{

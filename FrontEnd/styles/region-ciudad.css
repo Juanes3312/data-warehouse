@@ -49,11 +49,20 @@ header a:link, a:visited ,a:active{
     position: relative;
     display: inline-block;
     left: 64.5vw;
-    bottom: 2.8vh;
+    bottom: 5vh;
     border: 1px solid black;
     width: 10vw;
-    display:flex;
-    justify-content: center;
+   
+}
+
+#cajaAggCiudad{
+    position: relative;
+    display: inline-block;
+    left: 61.5vw;
+    
+    border: 1px solid black;
+    width: 10vw;
+
 }
 
 /* Remove default bullets */
@@ -83,7 +92,7 @@ li{
 
 #eliminar{
     display: inline-block;
-    left: 3vw;
+    left: 3vw; 
     width: 7vw;
     
 }
@@ -95,13 +104,21 @@ li{
     left: 2.5vw;
 }
 
+#pais{
+    padding-bottom: 10vh;
+}
+
 #ciudades{
     position: relative;
-    bottom: 6vh;
+    bottom: 5vh;
     left: 3vw;
 }
+
+#ciudad{
+    padding-bottom: 6vh;
+}
 #region{
-    margin-bottom: 5vw;
+    margin-bottom: 3vh;
 }
 
 #regiones{
@@ -111,26 +128,7 @@ li{
   }
   
   /* Style the caret/arrow */
-.caret {
-    cursor: pointer;
-    user-select: none; /* Prevent text selection */
-  }
-  
-  /* Create the caret/arrow with a unicode, and style it */
-.caret::before {
-    content: "\25B6";
-    color: black;
-    display: inline-block;
-    margin-right: 6px;
-  }
-/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
-.caret-down::before {
-    transform: rotate(90deg);
-    display: inline-block;
-    position: relative;
-    /*bottom:1.5vw;
-    right: 1.8vw;*/
-}
+
 
 
 
