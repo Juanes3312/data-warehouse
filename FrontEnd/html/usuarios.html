@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="../styles/usuarios.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
@@ -34,19 +37,54 @@
             <h2>Crear Usuario</h2>
             <div>
                 <p>Nombre:</p>
-                <input type="nombre" id="nombre">
+                <input type="nombre" id="inputNombre">
                 <p>Apellido:</p>
-                <input type="apellido" id="apellido">
+                <input type="apellido" id="inputApellido">
                 <p>Email:</p>
-                <input type="email" id="email">
-                <p>Perfil:</p>
-                <input type="perfil" id="perfil">
+                <input type="email" id="inputEmail">
+                <p>Direccion:</p>
+                <input type="direccion" id="inputDireccion">
                 <p>Contraseña:</p>
-                <input type="password" id="password">
+                <input type="password" id="inputPassword">
                 <p>Repetir Contraseña</p>
-                <input type="passwordConfirm" id="passwordConfirm">
+                <input type="password" id="inputPasswordConfirm">
             </div>
+            <button id="crearUsuario">
+                <p>Crear Usuario</p>
+            </button>
         </div>
     </div>
+
+   <table id="container">
+       <tr>
+           <th>
+               Nombre
+            </th>
+            <th>
+                Apellido
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                direccion
+            </th>
+            <th>admin</th>
+            <th>options</th>
+        </tr>
+        <!--
+            <tr>
+                <td id="nombre">Juan</td>
+                <td id="apellido">Jaramillo</td>
+                <td id="correo">juanes@gmail.com</td>
+                <td id="direccion">Carrera 66</td>
+                <td id="admin">Si</td>
+                <td id="opciones"><button class="editar">editar</button><button class="eliminar">eliminar</button></td>
+            </tr>
+        -->
+
+   </table>
 </body>
+<script src="../script/usuarios.js"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 </html>

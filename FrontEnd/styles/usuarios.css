@@ -39,3 +39,25 @@ header a:link, a:visited ,a:active{
     padding-bottom: 2vh;
     background-color: #E8E8E8;
 }
+
+#container{
+    width: 100%;
+    margin-top: 8vh;
+    border: 1px solid black;
+}
+
+th{
+    background-color: #1D72C2 ;
+    color: white;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+
+
+td{
+    border-left: 1px solid black;
+    font-family: 'Times New Roman', Times, serif    ;
+}
+
+#crearUsuario{
+    margin-top: 2vh;
+}
