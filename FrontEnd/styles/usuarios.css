@@ -64,3 +64,20 @@ td{
 #crearUsuario{
     margin-top: 2vh;
 }
+
+.editarUsuario{
+    position: absolute;
+    left: 25vw;
+    border: 1px solid black;
+    width: 25vw ;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background-color: #E8E8E8;
+    
+}
+
+.display-none{
+    display: none;
+}

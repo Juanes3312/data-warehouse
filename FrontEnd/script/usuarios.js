@@ -90,7 +90,31 @@ async function deleteUsuarios(num) {
     let url = 'http://localhost:4000/usuarios/' + num;
     await fetch(url, parametros);
     document.location.reload();
+}
+
+async function updateUsuarios(nombre){
+  const paisEditar = {
+    "name": nombre,
+
   }
+  const parametros = {
+    method: "PUT",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(paisEditar),
+    json: true,
+  }
+  console.log(parametros.body);
+  fetch(`http://localhost:4000/ciudades/` + id, parametros)
+    .then(response => {
+      response.json()
+      document.location.reload();
+    })
+    .catch(error => {
+      console.log(error)
+    })
+}
 
 async function agregarUsuarios(){
   let usuarios = await fetchUsuarios();
@@ -125,6 +149,9 @@ async function agregarUsuarios(){
     btnEditar.innerHTML = " Editar"
     btnEditar.setAttribute('class', "editar");
     tdOp.appendChild(btnEditar);
+    btnEditar.addEventListener("click", function(){
+      
+    })
     let btnEliminar = document.createElement("button");
     btnEliminar.innerHTML = "Eliminar";
     btnEliminar.setAttribute("class", "eliminar");
