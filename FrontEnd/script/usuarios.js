@@ -34,7 +34,7 @@ function guardarUsuarioDB(nombre,apellido,email,direccion,password){
           mensaje.style.color = "white"
           setTimeout(function(){
             document.location.reload();
-        },3000);
+        },2000);
         })
         .catch(error => {
           console.log(error)
@@ -79,12 +79,26 @@ async function fetchUsuarios() {
     return json;
   }
 
+async function deleteUsuarios(num) {
+    const parametros = {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      json: true,
+    }
+    let url = 'http://localhost:4000/usuarios/' + num;
+    await fetch(url, parametros);
+    document.location.reload();
+  }
+
 async function agregarUsuarios(){
   let usuarios = await fetchUsuarios();
   for(i = 0; i<usuarios.length; i++){
     console.log("oe")
     let trUsuario = document.createElement("tr");
     container.appendChild(trUsuario)
+    trUsuario.setAttribute("data", usuarios[i].id );
     let tdNombre = document.createElement("td")
     tdNombre.setAttribute("id", "nombre")
     tdNombre.innerHTML = usuarios[i].nombre;
@@ -103,7 +117,6 @@ async function agregarUsuarios(){
     trUsuario.appendChild(tdDireccion);
     let tdAdmin = document.createElement("td");
     tdAdmin.setAttribute("id", "correo");
-    
     trUsuario.appendChild(tdAdmin)
     let tdOp = document.createElement("td");
     tdOp.setAttribute("id", "opciones");
@@ -116,6 +129,9 @@ async function agregarUsuarios(){
     btnEliminar.innerHTML = "Eliminar";
     btnEliminar.setAttribute("class", "eliminar");
     tdOp.appendChild(btnEliminar);
+    btnEliminar.addEventListener("click", ()=>{
+      deleteUsuarios(trUsuario.getAttribute("data"));
+    })
     if(usuarios[i].admin === 1){
       tdAdmin.innerHTML = 'Si'
     }else{

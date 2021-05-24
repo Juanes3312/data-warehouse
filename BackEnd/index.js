@@ -8,7 +8,62 @@ const signature = 'ju4n3s'
 server.use(cors());
 server.use(express.json());
 server.use(compression());
-//guardar un pais nuevo
+
+function getToken(data){
+  const resp = jwt.sign(data, signature);
+  return resp;
+}
+
+//SECCION DEL LOGIN
+async function validarLogin(req, res, next) {
+  const usuarios = await traerUsuarios();
+  const {nombre, password} = req.body;
+  nombre = nombre.trim();
+  password = password.trim()
+  const i = usuarios.findIndex(c => {
+      return c.nombre == nombre; 
+  })
+  console.log(i, "soy i")
+  if( i > -1){
+      const e = usuarios[i];
+      if(e.password == password){
+          next();
+      }
+      else{
+          return res.status(409)
+          .send({
+              status: 'Error',
+              mensaje: 'el contacto no existe o los datos son incorrectos'
+          });
+      }
+  }
+  //console.log(usuarios)
+  if (i == -1) {
+      return res.status(409)
+          .send({
+              status: 'Error',
+              mensaje: 'el contacto no existe'
+          });
+  }
+  return next();
+}
+
+server.post("/login", validarLogin, (req,res) =>{
+  const usuario = req.body;
+  res.status(200).json({
+    status: "Ok",
+    mensaje: "Sesion iniciada",
+    token: getToken(usuario)
+  })
+})
+
+
+
+
+
+
+
+//SECCION DE REGIONES-CIUDADES
 server.post('/paises', (req, res) => {
   const {
     region_id,
@@ -43,6 +98,7 @@ server.delete("/paises/:id", (req, res) => {
     });
 })
 
+//eliminar una ciudad
 server.delete("/ciudades/:id", (req, res) => {
   let {
     id
@@ -57,6 +113,7 @@ server.delete("/ciudades/:id", (req, res) => {
     });
 })
 
+//editar el nombre de un pais
 server.put("/paises/:id", async function (req, res) {
   const a = req.params.id;
   const {
@@ -85,6 +142,7 @@ server.put("/paises/:id", async function (req, res) {
   }
 });
 
+//guardar una ciudad nueva
 server.post('/ciudades', (req, res) => {
   const {
     pais_id,
@@ -101,13 +159,12 @@ server.post('/ciudades', (req, res) => {
     })
 })
 
-
+//editar el nombre de un ciudad
 server.put("/ciudades/:id", async function (req, res) {
   const a = req.params.id;
   const {
     name
   } = req.body
-  console.log(name, "soy nombre")
   const pais = await traerCiudad(a);
   if (pais[0]) {
     sequelize.query("UPDATE `ciudades` SET `nombre` = ? WHERE `paises`.`id` = ?", {
@@ -147,6 +204,7 @@ server.post('/regiones', (req, res) => {
     })
 })
 
+// traer pais en especifico
 async function traerPais(id) {
   const res = await sequelize.query('SELECT * FROM paises WHERE paises.id = ?', {
     replacements: [id],
@@ -155,6 +213,7 @@ async function traerPais(id) {
   return res;
 }
 
+//traer ciudad en especifico
 async function traerCiudad(id) {
   const res = await sequelize.query('SELECT * FROM ciudades WHERE paises.id = ?', {
     replacements: [id],
@@ -181,8 +240,6 @@ server.get("/paises/:id", (req, res) => {
   let {
     id
   } = req.params;
-  //console.log(req.params.id, 'soy el id')
-  //console.log(id)
   sequelize
     .query("SELECT * FROM `paises` WHERE `region_id` = ? ", {
       replacements: [id],
@@ -196,8 +253,6 @@ server.get("/paises/:id", (req, res) => {
 //extraer la ciudad segun el pais
 server.get("/ciudades/:id", (req, res) => {
   let id = req.params.id;
-  //console.log(req.params.id, 'soy el id')
-  //console.log(id)
   sequelize
     .query("SELECT * FROM `ciudades` WHERE `pais_id` = ? ", {
       replacements: [id],
@@ -208,6 +263,15 @@ server.get("/ciudades/:id", (req, res) => {
       res.json(results);
     });
 })
+
+
+// SECCION DE USUARIOS
+async function traerUsuarios() {
+  const res = await sequelize.query('SELECT * FROM usuarios', {
+      type: sequelize.QueryTypes.SELECT
+  })
+  return res;
+}
 
 server.get('/usuarios', (req,res) =>{
   sequelize
@@ -237,6 +301,20 @@ server.post("/usuarios", (req, res) => {
       })
     })
 
+})
+
+server.delete("/usuarios/:id", (req, res) => {
+  let {
+    id
+  } = req.params
+  sequelize
+    .query("DELETE  FROM `usuarios` WHERE `id` = ? ", {
+      replacements: [id],
+      type: sequelize.QueryTypes.DELETE
+    })
+    .then(results => {
+      res.json(results);
+    });
 })
 
 
