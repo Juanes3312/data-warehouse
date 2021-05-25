@@ -266,12 +266,73 @@ server.get("/ciudades/:id", (req, res) => {
 
 
 // SECCION DE USUARIOS
+
+async function traerUsuario(id) {
+  const res = await sequelize.query('SELECT * FROM usuarios WHERE usuarios.id = ?', {
+    replacements: [id],
+    type: sequelize.QueryTypes.SELECT
+  });
+  return res;
+}
+
+
 async function traerUsuarios() {
   const res = await sequelize.query('SELECT * FROM usuarios', {
       type: sequelize.QueryTypes.SELECT
   })
   return res;
 }
+
+server.get("/usuario/:id", async function (req,res){
+  const {id} = req.params;
+  console.log(id, 'xd')
+  const respuesta = await sequelize.query('SELECT * FROM usuarios WHERE usuarios.id = ?', {
+    replacements: [id],
+    type: sequelize.QueryTypes.SELECT
+  });
+  res.status(200).json(respuesta)
+})
+
+server.put("/usuarios/admin/:id", (req,res)=>{
+  const {id} = req.params;
+  sequelize.query("UPDATE `usuarios` SET `admin` = 1 WHERE `usuarios`.`id` = ?",
+          {
+              replacements:[
+                  id
+              ],
+              type: sequelize.QueryTypes.UPDATE
+          }
+      )
+      .then(()=>{
+          res.status(200).json({
+              "status" : "ok",
+              "mensaje": "el usuario ha sido admin"
+          })
+      })
+}) 
+
+server.put('/usuarios/:id', function(req,res){
+  const {id} = req.params;
+  const {nombre,apellido,email,direccion} = req.body;
+      sequelize.query("UPDATE `usuarios` SET `nombre` = ?, `apellido` = ?, `email` = ?, `direccion` = ? WHERE `usuarios`.`id` = ?",
+          {
+              replacements:[
+                  nombre,
+                  apellido,
+                  email,
+                  direccion,
+                  id
+              ],
+              type: sequelize.QueryTypes.UPDATE
+          }
+      )
+      .then(()=>{
+          res.status(200).json({
+              "status" : "ok",
+              "mensaje": "el usuario ha sido actualizado"
+          })
+      })
+})
 
 server.get('/usuarios', (req,res) =>{
   sequelize
