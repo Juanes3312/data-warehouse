@@ -19,25 +19,27 @@
         </div>
         <div id="header2">
             <div>
-                <p>Contactos</p>
+                <a href="index.html">Contactos</a>
             </div>
             <div>
-                <p>Usuarios</p>
+                <a href="usuarios.html">Usuarios</a>
             </div>
             <div>
-                <p>Compañias</p>
+                <a href="companias.html">Compañias</a>
             </div>
             <div>
-                <p>Region/Ciudad</p>
+                <a href="region-ciudad.html">Region/Ciudad</a>
             </div>
         </div>
     </header>
-    <div class="crearUsuario">
+    <div class="crearUsuario" id="crearUsuario">
         <div class="crearUsuarioBorde">
             <h2>Crear Usuario</h2>
             <div>
                 <p>Nombre:</p>
-                <input type="nombre" id="inputNombre">
+                <form action="">
+                    <input type="nombre" id="inputNombre">
+                </form>
                 <p>Apellido:</p>
                 <input type="apellido" id="inputApellido">
                 <p>Email:</p>
@@ -49,22 +51,22 @@
                 <p>Repetir Contraseña</p>
                 <input type="password" id="inputPasswordConfirm">
             </div>
-            <button id="crearUsuario">
+            <button id="btncrearUsuario">
                 <p>Crear Usuario</p>
             </button>
         </div>
     </div>
-    <div id="editarUsuario" class="editarUsuario ">
+    <div id="editarUsuario" class="editarUsuario display-none ">
         <h2>Actualizar Usuario</h2>
         <div>
             <p>Nombre:</p>
-            <input type="nombre" id="inputNombre">
+            <input type="nombre" id="updateInputNombre">
             <p>Apellido:</p>
-            <input type="apellido" id="inputApellido">
+            <input type="apellido" id="updateInputApellido">
             <p>Email:</p>
-            <input type="email" id="inputEmail">
+            <input type="email" id="updateInputEmail">
             <p>Direccion:</p>
-            <input type="direccion" id="inputDireccion">
+            <input type="direccion" id="updateInputDireccion">
         </div>
         <button id="btnEditarUsuario">
             <p>Actualizar Usuario</p>

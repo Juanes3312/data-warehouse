@@ -1,12 +1,21 @@
+let cajaHeader = document.getElementsByTagName("header")[0];
+let cajaCrearUsuario = document.getElementById('crearUsuario');
+let cajaEditarUsuario = document.getElementById("editarUsuario")
 let iptNombre = document.getElementById("inputNombre");
 let iptApellido = document.getElementById("inputApellido")
 let iptEmail = document.getElementById("inputEmail")
 let iptDireccion = document.getElementById("inputDireccion")
 let iptPassword = document.getElementById("inputPassword")
 let iptPasswordConf = document.getElementById("inputPasswordConfirm");
-let btnEnviarUsuario = document.getElementById("crearUsuario");
-let container = document.getElementById("container")
-
+let uIptNombre = document.getElementById("updateInputNombre");
+let uIptApellido = document.getElementById("updateInputApellido")
+let uIptEmail = document.getElementById("updateInputEmail")
+let uIptDireccion = document.getElementById("updateInputDireccion")
+let btnEnviarUsuario = document.getElementById("btncrearUsuario");
+let btnEditarUsuario = document.getElementById("btnEditarUsuario");
+let container = document.getElementById("container");
+let key = JSON.parse(sessionStorage.getItem("key"));
+console.log(cajaHeader)
 function guardarUsuarioDB(nombre,apellido,email,direccion,password){
     const nuevoUsuario= {
         "name": nombre,
@@ -18,26 +27,39 @@ function guardarUsuarioDB(nombre,apellido,email,direccion,password){
       const parametros = {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'token': key
         },
         body: JSON.stringify(nuevoUsuario),
         json: true,
       }
       console.log(parametros.body);
-      fetch(`http://localhost:4000/usuarios`, parametros)
-        .then(response => response.json())
-        .then((data) => {
-          console.log(data);
+      
+        fetch(`http://localhost:4000/usuarios`, parametros)
+       
+        .then(response => {
+          let json = response.json()
+        if(response.ok){
+          return json
+        }else{
+          return json.then( err => { throw err})
+        }
+      })
+        .then(
+          (data) => {
+          console.log(data, 'soy data');
           alertify.message('Usuario creado')
           let mensaje = document.getElementsByClassName("ajs-message")[0];
           mensaje.style.background = "#1D72C2"
           mensaje.style.color = "white"
           setTimeout(function(){
-            document.location.reload();
-        },2000);
-        })
+          document.location.reload();
+          },2000);
+        }
+        )
         .catch(error => {
-          console.log(error)
+          console.log(error, ' error')
+          alertify.alert(error.mensaje);
         })
 }
 
@@ -45,9 +67,33 @@ btnEnviarUsuario.addEventListener("click", async function () {
     let validacion =  await CrearUsuarioValid();
     if(validacion){
         console.log("entre");
-        guardarUsuarioDB(iptNombre.value, iptApellido.value, iptEmail.value, iptDireccion.value, iptPassword.value)
+        try{
+          guardarUsuarioDB(iptNombre.value, iptApellido.value, iptEmail.value, iptDireccion.value, iptPassword.value)
+        }catch{
+         console.log( "no pase33333")
+        }
     }
 })
+
+function HacerAdmin(id){
+  const parametros = {
+    method: "PUT",
+    headers: {
+      'Content-Type': 'application/json',
+      'token': key
+    },
+    json: true,
+  }
+  console.log(parametros.body);
+  fetch(`http://localhost:4000/usuarios/admin/` + id, parametros)
+    .then(response => {
+      response.json()
+      document.location.reload();
+    })
+    .catch(error => {
+      console.log(error)
+    })
+}
 
 function CrearUsuarioValid() {
     if (iptPassword.value.length == 0 || iptPasswordConf.value.length == 0 ||
@@ -79,11 +125,29 @@ async function fetchUsuarios() {
     return json;
   }
 
+async function fetchUsuario(num){
+  console.log(num,'soy num');
+  let url = 'http://localhost:4000/usuario/' + num;
+  const parametros = {
+    method: "GET",
+    headers: {
+      'Content-Type': 'application/json',
+      'token': key
+    },
+    json: true,
+  }
+  let response = await fetch(url,parametros);
+  let json = await response.json();
+  console.log(json, "soy el usuario a editar")
+  return json;
+}
+
 async function deleteUsuarios(num) {
     const parametros = {
       method: "DELETE",
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'token': key
       },
       json: true,
     }
@@ -92,21 +156,24 @@ async function deleteUsuarios(num) {
     document.location.reload();
 }
 
-async function updateUsuarios(nombre){
-  const paisEditar = {
-    "name": nombre,
-
+async function updateUsuarios(nombre, apellido, email, direccion, id){
+  const UsuarioEditar = {
+    nombre: nombre,
+    apellido: apellido,
+    email: email, 
+    direccion: direccion
   }
   const parametros = {
     method: "PUT",
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'token': key
     },
-    body: JSON.stringify(paisEditar),
+    body: JSON.stringify(UsuarioEditar),
     json: true,
   }
   console.log(parametros.body);
-  fetch(`http://localhost:4000/ciudades/` + id, parametros)
+  fetch(`http://localhost:4000/usuarios/` + id, parametros)
     .then(response => {
       response.json()
       document.location.reload();
@@ -149,8 +216,21 @@ async function agregarUsuarios(){
     btnEditar.innerHTML = " Editar"
     btnEditar.setAttribute('class', "editar");
     tdOp.appendChild(btnEditar);
-    btnEditar.addEventListener("click", function(){
-      
+    btnEditar.addEventListener("click", async function(){
+      cajaHeader.classList.add("blur")
+      cajaCrearUsuario.classList.add("blur")
+      container.classList.add("blur");
+      cajaEditarUsuario.classList.remove('display-none')
+      let usuario = await fetchUsuario(trUsuario.getAttribute("data"));
+      console.log(usuario[0], "plis");
+      uIptNombre.value = usuario[0].nombre
+      uIptApellido.value = usuario[0].apellido;
+      uIptEmail.value = usuario[0].email
+      uIptDireccion.value = usuario[0].direccion;
+      btnEditarUsuario.addEventListener("click", function(){
+        updateUsuarios(uIptNombre.value, uIptApellido.value, uIptEmail.value, uIptDireccion.value, trUsuario.getAttribute("data"))
+        
+      })
     })
     let btnEliminar = document.createElement("button");
     btnEliminar.innerHTML = "Eliminar";
@@ -167,9 +247,18 @@ async function agregarUsuarios(){
       btnAdmin.setAttribute("id", "admin")
       btnAdmin.innerHTML = "Hacer admin"
       tdOp.appendChild(btnAdmin)
+      btnAdmin.addEventListener("click", function(){
+        HacerAdmin(trUsuario.getAttribute("data"))
+      })
     }
 
   }
 }
 
-agregarUsuarios();
+try{
+  agregarUsuarios();
+
+}catch(err){
+  console.log("el back no esta prendido");
+}
+

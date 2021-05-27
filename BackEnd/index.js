@@ -9,6 +9,56 @@ server.use(cors());
 server.use(express.json());
 server.use(compression());
 
+async function validarSiExiste(req, res, next){
+  const usuarios = await traerUsuarios();
+  const {email} = req.body;
+
+  const i = usuarios.findIndex(c => {
+      return c.email == email; ``
+  })
+  //console.log(i)
+  if (i >= 0) {
+      return res.status(409)
+          .json({
+              status: 'Error',
+              mensaje: 'El contacto ya existe'
+          });
+  }
+  return next();
+}
+
+function isAdmin(req,res,next){
+  const token = req.headers['access_token']
+  let usuario = traerUsuario();
+  console.log(usuario +' '+password); //este es admin
+  const decoded = jwt.verify(token, signature);
+  console.log(decoded);
+  if(decoded.usuario == usuario && decoded.password == password){
+      return next();
+  }else{
+      res.status(403).json({
+          auth:false,
+          message: 'no tienes permisos para esta accion'
+      })
+  }
+}
+
+function validartoken(req,res,next){
+  try {
+      const token = req.headers.token;
+      console.log(token);
+      const validData = jwt.verify(token, signature);
+      console.log(validData);
+      if (validData) {
+        req.userData = validData.userData;
+        next();
+      }
+    } catch (err) {
+      // res.statusMessage = ' xd ';
+      res.status(401).json({success: false, mensaje: "Error al validar usuario. Prueba un token válido."});
+    }
+}
+
 function getToken(data){
   const resp = jwt.sign(data, signature);
   return resp;
@@ -17,7 +67,7 @@ function getToken(data){
 //SECCION DEL LOGIN
 async function validarLogin(req, res, next) {
   const usuarios = await traerUsuarios();
-  const {nombre, password} = req.body;
+  let {nombre, password} = req.body;
   nombre = nombre.trim();
   password = password.trim()
   const i = usuarios.findIndex(c => {
@@ -25,7 +75,7 @@ async function validarLogin(req, res, next) {
   })
   console.log(i, "soy i")
   if( i > -1){
-      const e = usuarios[i];
+      let e = usuarios[i];
       if(e.password == password){
           next();
       }
@@ -82,7 +132,7 @@ server.post('/paises', (req, res) => {
 })
 
 //eliminar un pais
-server.delete("/paises/:id", (req, res) => {
+server.delete("/paises/:id",(req, res) => {
   let {
     id
   } = req.params;
@@ -311,7 +361,7 @@ server.put("/usuarios/admin/:id", (req,res)=>{
       })
 }) 
 
-server.put('/usuarios/:id', function(req,res){
+server.put('/usuarios/:id', validartoken, function(req,res){
   const {id} = req.params;
   const {nombre,apellido,email,direccion} = req.body;
       sequelize.query("UPDATE `usuarios` SET `nombre` = ?, `apellido` = ?, `email` = ?, `direccion` = ? WHERE `usuarios`.`id` = ?",
@@ -344,7 +394,7 @@ server.get('/usuarios', (req,res) =>{
   });
 })
 
-server.post("/usuarios", (req, res) => {
+server.post("/usuarios", validartoken, validarSiExiste, (req, res) => {
   let {
     name,
     apellido,
@@ -361,7 +411,7 @@ server.post("/usuarios", (req, res) => {
         mensaje: "todo correcto mi pana"
       })
     })
-
+    
 })
 
 server.delete("/usuarios/:id", (req, res) => {
