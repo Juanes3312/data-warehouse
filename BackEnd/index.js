@@ -109,8 +109,16 @@ server.post("/login", validarLogin, (req,res) =>{
 
 
 
-
-
+//SECCION DE COMPAÑIAS
+server.get("/companias", (req,res)=>{
+  sequelize
+    .query("SELECT * FROM companias", {
+      type: sequelize.QueryTypes.SELECT
+    })
+    .then(results => {
+      res.json(results);
+    });
+})
 
 
 //SECCION DE REGIONES-CIUDADES
@@ -252,6 +260,20 @@ server.post('/regiones', (req, res) => {
         mensaje: "todo correcto mi pana"
       })
     })
+})
+
+server.get("/pais/:id", (req, res) => {
+  let {
+    id
+  } = req.params;
+  sequelize
+    .query("SELECT * FROM `paises` WHERE `id` = ? ", {
+      replacements: [id],
+      type: sequelize.QueryTypes.SELECT
+    })
+    .then(results => {
+      res.json(results);
+    });
 })
 
 // traer pais en especifico

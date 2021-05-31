@@ -186,7 +186,6 @@ async function updateUsuarios(nombre, apellido, email, direccion, id){
 async function agregarUsuarios(){
   let usuarios = await fetchUsuarios();
   for(i = 0; i<usuarios.length; i++){
-    console.log("oe")
     let trUsuario = document.createElement("tr");
     container.appendChild(trUsuario)
     trUsuario.setAttribute("data", usuarios[i].id );

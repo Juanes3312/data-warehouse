@@ -1,0 +1,67 @@
+/* estilos del header*/
+header{
+    display:flex;
+    justify-content:space-between;
+    background-color: #1D72C2;
+}
+
+header a:link, a:visited ,a:active{
+    text-decoration:none;
+    color:#fff;
+    font-family: Open;
+}
+
+#header1 a h2{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+
+#header2{
+    display:flex;
+    align-items:center;
+}
+
+#header2  div a{
+    padding-left: 2.5vw;
+    color: #fff;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding-right: 1vw;
+}
+
+/* el body */
+
+#titulo{
+    position: relative;
+    
+}
+
+#container1{
+    display: flex;
+    align-items:center;
+    flex-direction: row;
+    justify-content:space-around;
+    position: relative;
+    margin-top: 10vh;
+}
+#btnAggCompania{
+    position: relative;
+    height: 8vh;
+}
+
+#container2{
+    width: 100%;
+    position: relative;
+    top: 15vh;
+    border: 1px solid black ;
+}
+
+th{
+    border-left: 1px solid black;
+}
+
+td{
+    text-align: center;
+    padding-top: 3vh;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+}
+
