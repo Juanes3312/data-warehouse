@@ -34,6 +34,10 @@ header a:link, a:visited ,a:active{
     
 }
 
+#cajaCompania{
+    display: inline-block;
+}
+
 #container1{
     display: flex;
     align-items:center;
@@ -65,3 +69,38 @@ td{
     border-left: 1px solid black;
 }
 
+.editarCompania{
+    position: absolute;
+    left: 40vw;
+    border: 1px solid black;
+    width: 25vw ;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background-color: #E8E8E8;
+    top: 35vh;
+    z-index: 99;
+}
+#btnCompania{
+    margin-top: 5vh;
+    height: 8vh;
+}
+
+#paises{
+    width: 13vw;
+    height: 3vh;
+    cursor: pointer;
+}
+
+.display-none{
+    display: none;
+}
+
+.blur{
+    filter: blur(2px);
+}
+
+.none-blur{
+    filter: blur(0);
+}

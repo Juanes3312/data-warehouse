@@ -120,6 +120,20 @@ server.get("/companias", (req,res)=>{
     });
 })
 
+server.post('/companias', (req, res) => {
+  const {
+nombre, pais, direccion
+  } = req.body;
+  sequelize.query("INSERT INTO companias (nombre, pais, direccion) VALUE(?,?,?)", {
+      replacements: [nombre, pais , direccion],
+      type: sequelize.QueryTypes.INSERT
+    })
+    .then(() => {
+      res.status(200).json({
+        mensaje: "todo correcto compañia ingresada"
+      })
+    })
+})
 
 //SECCION DE REGIONES-CIUDADES
 server.post('/paises', (req, res) => {
@@ -269,6 +283,16 @@ server.get("/pais/:id", (req, res) => {
   sequelize
     .query("SELECT * FROM `paises` WHERE `id` = ? ", {
       replacements: [id],
+      type: sequelize.QueryTypes.SELECT
+    })
+    .then(results => {
+      res.json(results);
+    });
+})
+
+server.get("/paises", (req, res) => {
+  sequelize
+    .query("SELECT * FROM `paises`", {
       type: sequelize.QueryTypes.SELECT
     })
     .then(results => {

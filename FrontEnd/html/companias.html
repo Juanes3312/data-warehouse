@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../styles/companias.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
 </head>
 
 <body>
@@ -31,7 +34,7 @@
             </div>
         </div>
     </header>
-    <div id="cajaCompañias">
+    <div id="cajaCompanias">
         <div id="container1">
             <h2 id="titulo">Compañias</h2>
             <button id=btnAggCompania>Agregar una compañia</button>
@@ -52,27 +55,24 @@
                     Acciones
                 </th>
             </tr>
-            <!--<tr>
-                <td id="nombre">
-                    softtek
-                </td>
-                <td id="pais">
-                    Mexico
-                </td>
-                <td id="direccion">
-                    carrera xx
-                </td>
-                <td id="acciones">
-                    <button id="btnEditar">
-                        editar
-                    </button>
-                    <button>
-                        Eliminar
-                    </button>
-                </td>
-            </tr>-->
         </table>
+    </div>
+    <div id="editarCrearCompania" class="editarCompania display-none ">
+        <h2 id="titutloCajaCompania">Actualizar Usuario</h2>
+        <div>
+            <p>Nombre:</p>
+            <input type="nombre" id="inputNombre">
+            <p>Pais:</p>
+            <select name="pais" id="paises">
+            </select>
+            <p>Direccion:</p>
+            <input type="direccion" id="inputDireccion">
+        </div>
+        <button id="btnCompania">
+            <p>Actualizar Usuario</p>
+        </button>
     </div>
 </body>
 <script src="../script/companias.js"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 </html>
