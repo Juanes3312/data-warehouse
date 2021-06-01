@@ -30,7 +30,7 @@ async function validarSiExiste(req, res, next){
 function isAdmin(req,res,next){
   const token = req.headers['access_token']
   let usuario = traerUsuario();
-  console.log(usuario +' '+password); //este es admin
+  console.log(usuario +' '+password); //este es admin arreglar esta funcion admin
   const decoded = jwt.verify(token, signature);
   console.log(decoded);
   if(decoded.usuario == usuario && decoded.password == password){
@@ -134,6 +134,74 @@ nombre, pais, direccion
       })
     })
 })
+
+server.get("/compania/:id", async function (req,res){
+  const {id} = req.params;
+  console.log(id, 'xd')
+  const respuesta = await sequelize.query('SELECT * FROM companias WHERE companias.id = ?', {
+    replacements: [id],
+    type: sequelize.QueryTypes.SELECT
+  });
+  res.status(200).json(respuesta)
+})
+
+async function traerCompania(id) {
+  const res = await sequelize.query('SELECT * FROM companias WHERE companias.id = ?', {
+    replacements: [id],
+    type: sequelize.QueryTypes.SELECT
+  });
+  return res;
+}
+
+
+server.put("/companias/:id", async function (req, res) {
+  const id = req.params.id;
+  const {
+    nombre, pais, direccion
+  } = req.body
+  console.log(nombre, "soy nombre")
+  const compania = await traerCompania(id);
+  if (compania[0]) {
+    sequelize.query("UPDATE `companias` SET `nombre` = ?, pais = ?, direccion = ? WHERE `companias`.`id` = ?", {
+        replacements: [
+          nombre,
+          pais,
+          direccion,
+          id
+        ],
+        type: sequelize.QueryTypes.UPDATE
+      })
+      .then(() => {
+        res.status(200).json({
+          "status": "ok",
+          "mensaje": "la compania ha sido modificada con exito"
+        })
+      })
+  } else {
+    res.status(400).json({
+      "mensaje": "No existe una compañia con ese id"
+    });
+  }
+});
+
+
+server.delete("/companias/:id",(req, res) => {
+  let {
+    id
+  } = req.params;
+  //console.log(req.params.id, 'soy el id')
+  //console.log(id)
+  sequelize
+    .query("DELETE  FROM `companias` WHERE `id` = ? ", {
+      replacements: [id],
+      type: sequelize.QueryTypes.DELETE
+    })
+    .then(results => {
+      res.json(results);
+    });
+})
+
+
 
 //SECCION DE REGIONES-CIUDADES
 server.post('/paises', (req, res) => {

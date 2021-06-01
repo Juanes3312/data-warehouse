@@ -82,7 +82,7 @@ td{
     top: 35vh;
     z-index: 99;
 }
-#btnCompania{
+#btnCompania, #btnUCompania{
     margin-top: 5vh;
     height: 8vh;
 }
