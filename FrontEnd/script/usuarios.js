@@ -89,14 +89,29 @@ function HacerAdmin(id) {
   }
   console.log(parametros.body);
   fetch(`http://localhost:4000/usuarios/admin/` + id, parametros)
-    .then(response => {
-      response.json()
-      document.location.reload();
-    })
-    .catch(error => {
-      console.log(error)
-    })
+  .then(response => {
+    let json = response.json()
+    if (response.ok) {
+      return json
+    } else {
+      return json.then(err => {
+        throw err
+      })
+    }
+  })
+  .then(
+    (data) => {
+      console.log(data, 'soy data');
+      document.location.reload(); 
+    }
+  )
+  .catch(error => {
+    console.log(error, ' error')
+    alertify.alert(error.message);
+  })
 }
+
+
 
 function CrearUsuarioValid() {
   if (iptPassword.value.length == 0 || iptPasswordConf.value.length == 0 ||
@@ -143,7 +158,7 @@ async function fetchUsuario(num) {
   return json;
 }
 
-async function deleteUsuarios(num) {
+function deleteUsuarios(num) {
   const parametros = {
     method: "DELETE",
     headers: {
@@ -153,8 +168,33 @@ async function deleteUsuarios(num) {
     json: true,
   }
   let url = 'http://localhost:4000/usuarios/' + num;
-  await fetch(url, parametros);
-  document.location.reload();
+  fetch(url, parametros)
+  .then(response => {
+    let json = response.json()
+    if (response.ok) {
+      return json
+    } else {
+      return json.then(err => {
+        throw err
+      })
+    }
+  })
+  .then(
+    (data) => {
+      console.log(data, 'soy data');
+      alertify.message('usuario borrado')
+      let mensaje = document.getElementsByClassName("ajs-message")[0];
+      mensaje.style.background = "#1D72C2"
+      mensaje.style.color = "white"
+      setTimeout(function () {
+        document.location.reload();
+      }, 2000);
+    }
+  )
+  .catch(error => {
+    console.log(error, ' error')
+    alertify.alert(error.message);
+  })
 }
 
 async function updateUsuarios(nombre, apellido, email, direccion, id) {
