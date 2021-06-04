@@ -12,9 +12,9 @@ server.use(compression());
 async function validarSiExiste(req, res, next){
   const usuarios = await traerUsuarios();
   const {email} = req.body;
-
+  console.log("si verifico")
   const i = usuarios.findIndex(c => {
-      return c.email == email; ``
+      return c.email == email; 
   })
   //console.log(i)
   if (i >= 0) {
@@ -27,18 +27,27 @@ async function validarSiExiste(req, res, next){
   return next();
 }
 
-function isAdmin(req,res,next){
-  const token = req.headers['access_token']
-  let usuario = traerUsuario();
-  console.log(usuario +' '+password); //este es admin arreglar esta funcion admin
+async function isAdmin(req,res,next){
+  const token = req.headers['token']
   const decoded = jwt.verify(token, signature);
-  console.log(decoded);
-  if(decoded.usuario == usuario && decoded.password == password){
+  console.log(decoded , " soy decoded");
+  let j;
+  const usuarios = await traerUsuarios();
+  const i = usuarios.findIndex(c => {
+      return c.nombre == decoded.nombre; 
+  })
+  if( i > -1){
+    let e = usuarios[i];
+    if(e.password == decoded.password){
+       j = usuarios[i]; 
+    }
+  }
+  if(j.admin == 1){
       return next();
   }else{
       res.status(403).json({
           auth:false,
-          message: 'no tienes permisos para esta accion'
+          message: 'No tienes permisos para esta accion'
       })
   }
 }
@@ -46,9 +55,8 @@ function isAdmin(req,res,next){
 function validartoken(req,res,next){
   try {
       const token = req.headers.token;
-      console.log(token);
+      console.log(token,"si valido");
       const validData = jwt.verify(token, signature);
-      console.log(validData);
       if (validData) {
         req.userData = validData.userData;
         next();
@@ -59,10 +67,12 @@ function validartoken(req,res,next){
     }
 }
 
+
 function getToken(data){
   const resp = jwt.sign(data, signature);
   return resp;
 }
+
 
 //SECCION DEL LOGIN
 async function validarLogin(req, res, next) {
@@ -77,6 +87,7 @@ async function validarLogin(req, res, next) {
   if( i > -1){
       let e = usuarios[i];
       if(e.password == password){
+          req.Objeto = usuarios[i];
           next();
       }
       else{
@@ -98,12 +109,17 @@ async function validarLogin(req, res, next) {
   return next();
 }
 
-server.post("/login", validarLogin, (req,res) =>{
+server.post("/login", validarLogin, function (req,res){
+  const x = req.Objeto
+  console.log(x);
+  let token;
   const usuario = req.body;
+  token = getToken(usuario);
   res.status(200).json({
     status: "Ok",
     mensaje: "Sesion iniciada",
-    token: getToken(usuario)
+    token: token,
+    admin: x.admin
   })
 })
 
@@ -120,7 +136,7 @@ server.get("/companias", (req,res)=>{
     });
 })
 
-server.post('/companias', (req, res) => {
+server.post('/companias',validartoken, (req, res) => {
   const {
 nombre, pais, direccion
   } = req.body;
@@ -154,7 +170,7 @@ async function traerCompania(id) {
 }
 
 
-server.put("/companias/:id", async function (req, res) {
+server.put("/companias/:id", validartoken,async function (req, res) {
   const id = req.params.id;
   const {
     nombre, pais, direccion
@@ -185,7 +201,7 @@ server.put("/companias/:id", async function (req, res) {
 });
 
 
-server.delete("/companias/:id",(req, res) => {
+server.delete("/companias/:id",validartoken,(req, res) => {
   let {
     id
   } = req.params;
@@ -428,6 +444,22 @@ server.get("/ciudades/:id", (req, res) => {
     });
 })
 
+//SECCION DE CONTACTOS
+
+server.get('/contactos', (req,res) =>{
+  sequelize
+  .query("SELECT * FROM `usuarios`", {
+    type: sequelize.QueryTypes.SELECT
+  })
+  .then(results => {
+    res.json(results);
+  });
+})
+
+
+
+
+
 
 // SECCION DE USUARIOS
 
@@ -457,7 +489,7 @@ server.get("/usuario/:id", async function (req,res){
   res.status(200).json(respuesta)
 })
 
-server.put("/usuarios/admin/:id", (req,res)=>{
+server.put("/usuarios/admin/:id",validartoken, isAdmin, (req,res)=>{
   const {id} = req.params;
   sequelize.query("UPDATE `usuarios` SET `admin` = 1 WHERE `usuarios`.`id` = ?",
           {
@@ -528,7 +560,7 @@ server.post("/usuarios", validartoken, validarSiExiste, (req, res) => {
     
 })
 
-server.delete("/usuarios/:id", (req, res) => {
+server.delete("/usuarios/:id", validartoken,isAdmin,(req, res) => {
   let {
     id
   } = req.params
