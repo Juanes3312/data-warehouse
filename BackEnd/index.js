@@ -448,7 +448,7 @@ server.get("/ciudades/:id", (req, res) => {
 
 server.get('/contactos', (req,res) =>{
   sequelize
-  .query("SELECT * FROM `usuarios`", {
+  .query("SELECT * FROM `contactos`", {
     type: sequelize.QueryTypes.SELECT
   })
   .then(results => {

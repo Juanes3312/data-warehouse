@@ -172,6 +172,20 @@ th{
     border-bottom-right-radius: 12vw;
 }
 
+.delete{
+    position: relative;
+    left: 85vw;
+    top: 3vw;
+    display: inline-block;
+}
+
+.delete button{
+    background-color: #1D72C2;
+    color: white;
+    width: 8vw;
+    height: 8vh;
+}
+
 
 .display-none{
     display: none;
