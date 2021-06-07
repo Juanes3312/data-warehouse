@@ -46,7 +46,64 @@
             </div>
             <button id="btnIngresar">
                 <p>Ingresar</p>
+
             </button>
+        </div>
+    </div>
+    <div id="cajaAggContacto">
+        <div id="cajaAzul">
+            <h2>Nuevo Contacto</h2>
+            <P>X</P>
+        </div>
+        <div id="cajaDatos">
+            <div id="cajaNombre">
+                <p>Nombre</p>
+                <input type="text" id="inputNombre">
+            </div>
+            <div id="cajaCargo">
+                <p>Cargo</p>
+                <input type="text" id="inputCargo">
+            </div>
+            <div id="cajaEmail">
+                <p>Email</p>
+                <input type="text" id="inputEmail">
+            </div>
+            <div id="cajaCompania">
+                <p>Compañia</p>
+                <select name="compania" id="Selectcompania">
+                </select>
+            </div>
+        </div>
+        <div id="cajaDatos2">
+            <div id="cajaRegion">
+                <p>Region</p>
+                <select name="Region" id="SelectRegion">
+                </select>
+            </div>
+            <div id="cajaPais">
+                <p>Pais</p>
+                <select name="pais" id="SelectPais">
+                </select>
+            </div>
+            <div id="cajaCiudad">
+                <p>Pais</p>
+                <select name="ciudad" id="SelectCiudad">
+                </select>
+            </div>
+            <div id="cajaDireccion">
+                <p>Direccion</p>
+                <Input id="iptDireccion"></Input>
+            </div>
+            <div id="cajaInteres">
+                <p>Interes</p>
+                <input type="range" list="tickmarks" id="iptInteres" step="25">
+                <datalist id="tickmarks">
+                    <option value="25" label="25%">25%</option>
+                    <option value="50" label="50%">
+                    <option value="75" label="75%">
+                    <option value="100" label="100%">
+                </datalist>
+            </div>
         </div>
     </div>
     <div id="container1" class="container1">
@@ -59,40 +116,38 @@
 
         </div>
         <div id="botonesCont1">
-            <button>Exportar Contactos</button>
-            <button>Agregar Contacto</button>
-            <i class="fas fa-search"></i>
+            <button id="expContacto">Exportar Contactos</button>
+            <button id="aggContacto">Agregar Contacto</button>
         </div>
     </div>
     <div class="delete display-none">
         <button>Borrar</button>
     </div>
-        <table id="container2" class="container2">
-            <tr id="titulos">
-                <th>
-                    <input type="checkbox" name="" id="checkboxPp">
-                </th>
-                <th id="nombreT">
-                   
-                    Nombre
-                </th>
-                <th id="paisT">
-                    Pais/Region
-                </th>
-                <th id="direccionT">
-                    Compañia  
-                </th>
-                <th id="accionesT">
-                    Cargo
-                </th>
-                <th>
-                    Interes
-                </th>
-                <th>
-                    Acciones
-                </th>
-            </tr>
-        </table>
+    <table id="container2" class="container2">
+        <tr id="titulos">
+            <th>
+                <input type="checkbox" name="" id="checkboxPp">
+            </th>
+            <th id="nombreT">
+                Contacto
+            </th>
+            <th id="paisT">
+                Pais/Region
+            </th>
+            <th id="direccionT">
+                Compañia
+            </th>
+            <th id="accionesT">
+                Cargo
+            </th>
+            <th>
+                Interes
+            </th>
+            <th>
+                Acciones
+            </th>
+        </tr>
+    </table>
 </body>
 <script src="../script/script.js"></script>
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>

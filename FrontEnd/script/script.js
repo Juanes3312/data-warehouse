@@ -12,6 +12,7 @@ let checkBoxpp = document.getElementById("checkboxPp");
 let checkbox = document.getElementsByClassName("checkBox")
 let contactosSeleccionados = [];
 let trContacto;
+let iptInteres = document.getElementById("iptInteres");
 //let checkBox;
 let contacto = document.getElementsByClassName("contacto");
 let btnDelete = document.getElementsByClassName("delete")[0];
@@ -30,6 +31,9 @@ if (storageLocal == null) {
     console.log(checkbox)
     console.log(btnDelete)
     if (checked) {
+      for(j = -20 ; j <= contactosSeleccionados.length; j++){
+        contactosSeleccionados.shift();
+      }
       for (i = 0; i < checkbox.length; i++) {
         checkbox[i].checked = true;
         contactosSeleccionados.push(contacto[i].getAttribute("data"));
@@ -41,8 +45,10 @@ if (storageLocal == null) {
     } else {
       for (i = 0; i < checkbox.length; i++) {
         checkbox[i].checked = false;
-        let e = contactosSeleccionados.indexOf(contacto[i].getAttribute('data'))
-        contactosSeleccionados.splice(e, 1);
+        //let e = contactosSeleccionados.indexOf(contacto[i].getAttribute('data'))
+        for(j = 0 ; j< contactosSeleccionados.length; j++){
+          contactosSeleccionados.shift();
+        }
         checkbox[i].parentNode.parentNode.classList.remove("checked")
       }
       if (contactosSeleccionados.length === 0) {
@@ -51,7 +57,9 @@ if (storageLocal == null) {
     }
     console.log(contactosSeleccionados);
   }, false);
-
+  iptInteres.addEventListener("change", function(){
+    console.log(iptInteres.value)
+  })
 })();
 
 
@@ -162,10 +170,18 @@ async function agregarContactos() {
       console.log(contactosSeleccionados);
     }, false);
     tdCheckBox.appendChild(checkBox);
-    let tdNombre = document.createElement("td")
-    tdNombre.setAttribute("id", "nombre");
-    tdNombre.innerText = contactos[i].nombre;
-    trContacto.appendChild(tdNombre)
+    let tdContacto = document.createElement("td")
+    tdContacto.setAttribute("id", "Contacto");
+    let pNombre = document.createElement("p");
+    pNombre.innerText = contactos[i].nombre;
+    pNombre.setAttribute("id", "nombre");
+    tdContacto.appendChild(pNombre)
+    trContacto.appendChild(tdContacto);
+    let pEmail = document.createElement("p");
+    pEmail.innerText = contactos[i].email;
+    pEmail.setAttribute("id", "email");
+    tdContacto.appendChild(pEmail)
+    trContacto.appendChild(tdContacto)
     let tdPais = document.createElement("td");
     tdPais.setAttribute("id", "pais");
     let pais = await fetchPais(contactos[i].id_pais);

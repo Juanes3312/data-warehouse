@@ -1,4 +1,9 @@
 /* estilos del header*/
+button{
+    cursor: pointer;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
 header{
     display:flex;
     justify-content:space-between;
@@ -25,7 +30,81 @@ header a:link, a:visited ,a:active{
     color: #fff;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     padding-right: 1vw;
+    
 }
+/* agg contacto */
+
+#cajaAzul{
+    display:flex;
+    justify-content:space-between;
+    color: #fff;
+    
+    background-color: #1D72C2;
+    height: 15vh;
+}
+
+#cajaAzul p{
+    padding: 2vh;
+}
+
+#cajaAzul h2{
+    padding-left: 2vh;
+}
+
+#cajaDatos{
+    position: absolute;
+    border: 3px solid #0683F9;
+    z-index: 99;
+    top: 10vh;
+    background-color: white;
+    left: 15vw;
+    padding: 1.5vw;
+    display: flex;
+    border-radius: 0.5vw;
+}
+
+#cajaDatos2{
+    position: relative;
+    display: flex;
+    top: 18vh;
+    left: 4vw;
+}
+
+#cajaDatos2 div{
+    padding-left: 1vw;
+}
+
+
+#cajaDatos div{
+    padding-left: 1vw;
+}
+
+select{
+    width: 10vw;
+}
+
+#Selectcompania{
+    width: 10vw;
+}
+
+#cajaAggContacto{
+    width: 80vw;
+    left: 10vw;
+    position: relative;
+    height: 60vh;
+    border: 1px solid black;
+    margin-top: 5vh;
+}
+
+#container1, #container2, header{
+    filter: blur(2px);
+}
+
+#iptInteres{
+    width: 12vw;
+    
+}
+
 /* estilos login*/
 .login{
     display: inline-block;
@@ -53,6 +132,16 @@ header a:link, a:visited ,a:active{
     top: 5vh;
 }
 
+#aggContacto, #expContacto{
+    background: #0683F9;
+    color: #fff;
+    height: 10vh;
+    border-radius: 2px;
+    border-radius: 2px;
+    font-size: 1.2vw;
+    
+}
+
 #container1 div{
     margin: 2vw
 }
@@ -78,13 +167,23 @@ th{
     border-bottom: 1px solid black;
 }
 
+#email{
+    color: #A4A4A4;
+    position: relative;
+    top: -1vw;
+}
+
+
+
 #botonesCont1{
     position: relative;
     top: 5.5vh;
 }
 
 #interes{
-    display: flex
+    display: flex;
+    position: relative;
+    top: 4vh;
 }
 
 .porcentaje{
