@@ -38,6 +38,7 @@
     <div id="login" class="login display-none">
         <div id="loginBorde">
             <h2>Bienvenido</h2>
+            
             <div id="loginCaja">
                 <input type="nombre" name="nombre" id="inputNombre" placeholder="nombre" autocomplete='off'>
             </div>
@@ -50,10 +51,10 @@
             </button>
         </div>
     </div>
-    <div id="cajaAggContacto">
+    <div id="cajaAggContacto" class="display-none cajaAggContacto">
         <div id="cajaAzul">
             <h2>Nuevo Contacto</h2>
-            <P>X</P>
+            <P id="xCajaAzul">X</P>
         </div>
         <div id="cajaDatos">
             <div id="cajaNombre">
@@ -70,24 +71,24 @@
             </div>
             <div id="cajaCompania">
                 <p>Compañia</p>
-                <select name="compania" id="Selectcompania">
+                <select name="compania" id="selectCompania">
                 </select>
             </div>
         </div>
         <div id="cajaDatos2">
             <div id="cajaRegion">
                 <p>Region</p>
-                <select name="Region" id="SelectRegion">
+                <select name="Region" id="selectRegion">
                 </select>
             </div>
             <div id="cajaPais">
                 <p>Pais</p>
-                <select name="pais" id="SelectPais">
+                <select name="pais" id="selectPais">
                 </select>
             </div>
             <div id="cajaCiudad">
-                <p>Pais</p>
-                <select name="ciudad" id="SelectCiudad">
+                <p>Ciudad</p>
+                <select name="ciudad" id="selectCiudad">
                 </select>
             </div>
             <div id="cajaDireccion">
@@ -96,13 +97,20 @@
             </div>
             <div id="cajaInteres">
                 <p>Interes</p>
-                <input type="range" list="tickmarks" id="iptInteres" step="25">
-                <datalist id="tickmarks">
-                    <option value="25" label="25%">25%</option>
-                    <option value="50" label="50%">
-                    <option value="75" label="75%">
-                    <option value="100" label="100%">
-                </datalist>
+                <div class="__range __range-step">
+                    <input value="25" type="range"  max="100" min="25" step="25" id="iptInteres"  list="ticks">
+                    <datalist id="ticks">
+                        <option value="25">25%</option>
+                        <option value="50" >50%</option>
+                        <option value="75" >75%</option>
+                        <option value="100" >100%</option>
+                       
+                    </datalist>
+                    <output></output>
+                </div>
+            </div>
+            <div id="btnCajaGuardarUsuario">
+                <button id="btnGuardarUsuario">Guardar Usuario</button>
             </div>
         </div>
     </div>
@@ -149,7 +157,7 @@
         </tr>
     </table>
 </body>
-<script src="../script/script.js"></script>
+<script type="module" src="../script/script.js"></script>
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
 </html>

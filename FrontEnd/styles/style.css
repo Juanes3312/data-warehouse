@@ -80,11 +80,11 @@ header a:link, a:visited ,a:active{
 }
 
 select{
-    width: 10vw;
+    width: 11vw;
 }
 
-#Selectcompania{
-    width: 10vw;
+#selectCompania{
+    width: 12.5vw;
 }
 
 #cajaAggContacto{
@@ -96,8 +96,18 @@ select{
     margin-top: 5vh;
 }
 
-#container1, #container2, header{
-    filter: blur(2px);
+#xCajaAzul{
+    cursor: pointer;
+}
+
+#btnCajaGuardarUsuario{
+    position: relative;
+    left: 3vw;
+    top: 10vh;
+}
+
+#btnCajaGuardarUsuario button{
+    height: 8vh;
 }
 
 #iptInteres{
@@ -285,7 +295,95 @@ th{
     height: 8vh;
 }
 
+/* cosas del la barra de interes*/
 
+.__range input
+{
+  outline: none;
+	-webkit-appearance: none;
+	background-color: #aaa;
+	height: 3px;
+	width: 100%;
+	margin: 10px auto;
+}
+.__range input::-webkit-slider-thumb
+{
+	-webkit-appearance: none;
+	width: 20px;
+	height: 20px;
+	background-color: green;
+	border-radius: 50%;
+	cursor: -moz-grab;
+	cursor: -webkit-grab; 
+}            
+.__range input::-moz-range-thumb
+{
+	-webkit-appearance: none;
+	width: 20px;
+	height: 20px;
+	background-color: green;
+	border-radius: 50%;
+	cursor: -moz-grab;
+	cursor: -webkit-grab; 
+}
+.__range input::-ms-thumb
+{
+	-webkit-appearance: none;
+	width: 20px;
+	height: 20px;
+	background-color: green;
+	border-radius: 50%;
+	cursor: -moz-grab;
+	cursor: -webkit-grab; 
+}
+.__range-step{
+	position: relative;                
+}
+
+.__range-max{
+	float: right;
+}
+.__range-step input::-webkit-slider-thumb
+{
+	background: transparent;
+}            
+.__range-step input::-moz-range-thumb
+{
+	background: transparent;
+}
+.__range-step input::-ms-thumb
+{
+	background: transparent;
+}
+.__range-step datalist {
+	position:relative;
+	display: flex;
+	justify-content: space-between;
+	height: auto;
+	bottom: 16px;
+	/* disable text selection */
+	-webkit-user-select: none; /* Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */                
+	user-select: none; /* Standard */
+	/* disable click events */
+	pointer-events:none;  
+}
+.__range-step datalist option {
+	width: 10px;
+	height: 10px;
+	min-height: 10px;
+	border-radius: 100px;
+	/* hide text */
+	white-space: nowrap;       
+  padding:0;
+  line-height: 40px;
+}
+
+
+
+
+/* cosas importantes*/
 .display-none{
     display: none;
 }

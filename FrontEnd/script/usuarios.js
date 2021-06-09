@@ -69,7 +69,6 @@ function guardarUsuarioDB(nombre, apellido, email, direccion, password) {
 btnEnviarUsuario.addEventListener("click", async function () {
   let validacion = await CrearUsuarioValid();
   if (validacion) {
-    console.log("entre");
     try {
       guardarUsuarioDB(iptNombre.value, iptApellido.value, iptEmail.value, iptDireccion.value, iptPassword.value)
     } catch {

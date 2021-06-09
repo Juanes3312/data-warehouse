@@ -1,3 +1,4 @@
+import {fetchRegiones, fetchPaises,fetchCiudades} from "./Fetch/fetch.js"
 let region = document.getElementById("region")
 let btnaggpais = document.getElementsByClassName("aggPais");
 let btnAggRegion = document.getElementById('cajaAggRegion');
@@ -88,13 +89,7 @@ function guardarRegion(nombre) {
 
 
 //funcion que trae las regiones
-async function fetchRegiones() {
-  let url = 'http://localhost:4000/regiones';
-  let response = await fetch(url);
-  let json = await response.json();
-  console.log(json)
-  return json;
-}
+
 
 async function deletePaises(num) {
   const parametros = {
@@ -168,23 +163,6 @@ async function updateCiudades(id, name) {
     })
 }
 
-//funcion que trae los paises segun la region
-async function fetchPaises(num) {
-  let url = 'http://localhost:4000/paises/' + num;
-  let response = await fetch(url, );
-  let json = await response.json();
-  //console.log(json);
-  return json;
-}
-
-//funciones que trae las ciudad de la base datos segun la paises
-async function fetchCiudades(num) {
-  let url = 'http://localhost:4000/ciudades/' + num;
-  let response = await fetch(url, );
-  let json = await response.json();
-  //console.log(json);
-  return json;
-}
 
 async function agregarArbol() {
   let regiones = await fetchRegiones();
@@ -232,9 +210,10 @@ async function agregarArbol() {
       cajaAgg.children[0].innerHTML = "Que ciudad desea agregar?"
       header.classList.add('blur');
       arbolDeRegiones.classList.add('blur');
+      btnAggX.innerHTML = "Guardar"
       // funcion que guarda el pais en la base datos
       btnAggX.addEventListener("click", function () {
-        nombre = resAggX.value;
+        let nombre = resAggX.value;
         guardarCiudad(buttonAggC.getAttribute('data'), nombre);
 
       })

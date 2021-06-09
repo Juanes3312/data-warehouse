@@ -1,28 +1,160 @@
-let iptNombre = document.getElementById("inputNombre");
+import {
+  fetchRegiones,
+  fetchPaises,
+  fetchCiudades,
+  fetchCompanias
+} from "./Fetch/fetch.js"
 let iptPassword = document.getElementById("inputPassword");
 let btnIngresar = document.getElementById("btnIngresar");
 let storageLocal = JSON.parse(sessionStorage.getItem("key"));
 let cajaLogin = document.getElementById('login');
 let container1 = document.getElementById("container1");
 let container2 = document.getElementById("container2");
+let xCajaAzul = document.getElementById("xCajaAzul")
 //console.log(storageLocal)
-let headerx = document.getElementsByName("navbar")[0]
+let header = document.getElementsByName("navbar")[0]
 let usuariosHeader = document.getElementById("usuariosHeader");
 let checkBoxpp = document.getElementById("checkboxPp");
 let checkbox = document.getElementsByClassName("checkBox")
 let contactosSeleccionados = [];
 let trContacto;
-let iptInteres = document.getElementById("iptInteres");
+let iptNombre = document.getElementById("inputNombre");
+let iptCargo = document.getElementById("inputCargo");
+let iptEmail = document.getElementById("inputEmail");
+let iptCompania = document.getElementById("selectCompania");
+let iptRegion = document.getElementById("selectRegion");
+let iptPais = document.getElementById("selectPais");
+let iptCiudad = document.getElementById("selectCiudad")
+let iptDireccion = document.getElementById("iptDireccion");
+let iptInteres = document.getElementById("iptInteres")
 //let checkBox;
 let contacto = document.getElementsByClassName("contacto");
 let btnDelete = document.getElementsByClassName("delete")[0];
+let btnCajaAggContacto = document.getElementById("aggContacto");
+let btnGuardarUsuario = document.getElementById("btnGuardarUsuario")
+let cajaAggContacto = document.getElementById("cajaAggContacto")
 if (storageLocal == null) {
   cajaLogin.classList.remove("display-none")
   container1.classList.add("display-none")
   container2.classList.add("display-none")
-  headerx.classList.add("blur");
+  header.classList.add("blur");
 }
 
+xCajaAzul.addEventListener("click", function () {
+  cajaAggContacto.classList.add("display-none")
+  container1.classList.remove("blur");
+  container2.classList.remove("blur");
+  header.classList.remove("blur")
+});
+
+(async function agregarInfoSelect() {
+  let optDefectoComp = document.createElement("option");
+  optDefectoComp.innerHTML = "Selecciona una Compania";
+  optDefectoComp.setAttribute("selected", "");
+  optDefectoComp.setAttribute("disable", "");
+  optDefectoComp.setAttribute("hidden", "")
+  iptCompania.appendChild(optDefectoComp);
+let companias = await fetchCompanias();
+for(let j = 0 ; j < companias.length; j++){
+  iptCompania.setAttribute("data", companias[j].id)
+    let optCompania = document.createElement("option");
+    optCompania.setAttribute("value", companias[j].id);
+    optCompania.innerHTML = companias[j].nombre;
+    iptCompania.appendChild(optCompania);
+    console.log("hola")
+}
+
+  let Regiones = await fetchRegiones();
+  for (let i = 0; i < Regiones.length; i++) {
+    iptRegion.setAttribute("data", Regiones[i].id)
+    let optRegion = document.createElement("option");
+    optRegion.setAttribute("value", Regiones[i].id);
+    optRegion.innerHTML = Regiones[i].nombre;
+    iptRegion.appendChild(optRegion);
+  }
+  let optDefectoR = document.createElement("option");
+  optDefectoR.innerHTML = "Selecciona una region";
+  optDefectoR.setAttribute("selected", "");
+  optDefectoR.setAttribute("disable", "");
+  optDefectoR.setAttribute("hidden", "")
+  iptRegion.appendChild(optDefectoR);
+  let optDefectoP = document.createElement("option");
+  optDefectoP.innerHTML = "Selecciona un Pais";
+  optDefectoP.setAttribute("selected", "");
+  optDefectoP.setAttribute("disable", "");
+  optDefectoP.setAttribute("hidden", "")
+  iptPais.appendChild(optDefectoP);
+  let optDefectoC = document.createElement("option");
+  optDefectoC.innerHTML = "Selecciona una Ciudad";
+  optDefectoC.setAttribute("selected", "");
+  optDefectoC.setAttribute("disable", "");
+  optDefectoC.setAttribute("hidden", "")
+  iptCiudad.appendChild(optDefectoC);
+  iptRegion.addEventListener("change", async function () {
+    //console.log(iptRegion.value, "soy value iptregion")
+    let paises = await fetchPaises(iptRegion.value);
+
+    console.log(iptPais.options)
+    for (let e = -1; e <= iptPais.options.length; e++) {
+      console.log(iptPais.options[e], "borrando en la posicion ", e)
+      iptPais.options[0] = null;
+    }
+    for (let i = 0; i < paises.length; i++) {
+      let optPais = document.createElement("option");
+      optPais.setAttribute("value", paises[i].id);
+      optPais.setAttribute("class", "pais");
+      optPais.innerHTML = paises[i].nombre;
+      iptPais.appendChild(optPais);
+    }
+  });
+  iptPais.addEventListener("change", async function () {
+    let ciudad = await fetchCiudades(iptPais.value);
+    for (let e = -1; e <= iptCiudad.options.length; e++) {
+      iptCiudad.options[0] = null;
+    }
+    for (let i = 0; i < ciudad.length; i++) {
+      let optCiudad = document.createElement("option");
+      optCiudad.setAttribute("value", ciudad[i].id);
+      optCiudad.setAttribute("class", "ciudad");
+      optCiudad.innerHTML = ciudad[i].nombre;
+      iptCiudad.appendChild(optCiudad);
+    }
+  })
+})();
+
+
+
+function ValidarCampos() {
+  if (iptPassword.value.length == 0 || iptPasswordConf.value.length == 0 ||
+    iptNombre.value.length == 0 || iptApellido.value.length == 0 ||
+    iptEmail.value.length == 0 || iptDireccion.value.length == 0) {
+    alertify
+      .alert("Debe rellenar todos los campos", function () {});
+    let alerta = document.getElementsByClassName('ajs-header')[0];
+    alerta.innerHTML = ""
+    return false;
+  }
+  if (iptPassword.value != iptPasswordConf.value) {
+    alertify
+      .alert("Las contraseñas deben ser iguales", function () {});
+    let alerta = document.getElementsByClassName('ajs-header')[0];
+    alerta.innerHTML = ""
+    return false;
+  }
+  return true;
+};
+
+btnGuardarUsuario.addEventListener("click", async function () {
+  let validacion = await validarCampos();
+  if (validacion) {
+    try {
+
+    } catch {
+
+    }
+  }
+
+});
 
 
 (function checkBoxPrincipal() {
@@ -31,7 +163,7 @@ if (storageLocal == null) {
     console.log(checkbox)
     console.log(btnDelete)
     if (checked) {
-      for(j = -20 ; j <= contactosSeleccionados.length; j++){
+      for (j = -20; j <= contactosSeleccionados.length; j++) {
         contactosSeleccionados.shift();
       }
       for (i = 0; i < checkbox.length; i++) {
@@ -46,7 +178,7 @@ if (storageLocal == null) {
       for (i = 0; i < checkbox.length; i++) {
         checkbox[i].checked = false;
         //let e = contactosSeleccionados.indexOf(contacto[i].getAttribute('data'))
-        for(j = 0 ; j< contactosSeleccionados.length; j++){
+        for (j = 0; j < contactosSeleccionados.length; j++) {
           contactosSeleccionados.shift();
         }
         checkbox[i].parentNode.parentNode.classList.remove("checked")
@@ -57,15 +189,20 @@ if (storageLocal == null) {
     }
     console.log(contactosSeleccionados);
   }, false);
-  iptInteres.addEventListener("change", function(){
-    console.log(iptInteres.value)
-  })
 })();
 
 
 
 async function fetchPais(id) {
   let url = 'http://localhost:4000/pais/' + id;
+  let response = await fetch(url);
+  let json = await response.json();
+  //console.log(json)
+  return json;
+}
+
+async function fetchCiudad(id) {
+  let url = 'http://localhost:4000/ciudad/' + id;
   let response = await fetch(url);
   let json = await response.json();
   //console.log(json)
@@ -111,7 +248,7 @@ function Login(nombre, password) {
         cajaLogin.classList.add("display-none")
         container1.classList.remove("display-none")
         container2.classList.remove("display-none")
-        headerx.classList.remove("blur")
+        header.classList.remove("blur")
       }, 2000);
       if (data.admin == 0) {
         usuariosHeader.classList.add("display-none")
@@ -135,7 +272,7 @@ async function fetchContactos() {
 
 async function agregarContactos() {
   let contactos = await fetchContactos();
-  for (i = 0; i < contactos.length; i++) {
+  for (let i = 0; i < contactos.length; i++) {
     trContacto = document.createElement("tr");
     trContacto.setAttribute("data", contactos[i].id);
     trContacto.classList.add("contacto")
@@ -150,7 +287,7 @@ async function agregarContactos() {
       let checked = checkBox.checked;
       if (checked) {
         console.log(checkBox);
-        console.log(checkBox.parentNode.parentNode.getAttribute("data"),"aaaaaaaaaaaa")
+        console.log(checkBox.parentNode.parentNode.getAttribute("data"), "aaaaaaaaaaaa")
         contactosSeleccionados.push(checkBox.parentNode.parentNode.getAttribute('data'));
         checkBox.parentNode.parentNode.classList.add("checked")
         if (contactosSeleccionados.length > 0) {
@@ -184,15 +321,16 @@ async function agregarContactos() {
     trContacto.appendChild(tdContacto)
     let tdPais = document.createElement("td");
     tdPais.setAttribute("id", "pais");
-    let pais = await fetchPais(contactos[i].id_pais);
-    for (e = 0; e < pais.length; e++) {
+    let ciudad = await fetchCiudad(contactos[i].id_ciudad);
+    for (let e = 0; e < ciudad.length; e++) {
+      let pais = await fetchPais(ciudad[e].pais_id)
       tdPais.innerHTML = pais[e].nombre;
       trContacto.appendChild(tdPais);
     }
     let tdCompania = document.createElement("td");
     tdCompania.setAttribute("id", "compania");
     let compania = await fetchCompania(contactos[i].id_compania)
-    for (e = 0; e < compania.length; e++) {
+    for (let e = 0; e < compania.length; e++) {
       tdCompania.innerHTML = compania[e].nombre;
       trContacto.appendChild(tdCompania);
     }
@@ -241,20 +379,15 @@ async function agregarContactos() {
 
 agregarContactos();
 
-
-/*(function btnBorrar(){
-  if(contactosSeleccionados.length > 0){
-    btnDelete.classList.toggle("display-none")
-  }else if(contactosSeleccionados.length = 0){
-    btnDelete.classList.remove("display-none")
-  }
-  console.log(contactosSeleccionados.length);
-})();*/
+btnCajaAggContacto.addEventListener("click", function () {
+  cajaAggContacto.classList.remove("display-none")
+  container1.classList.add("blur");
+  container2.classList.add("blur");
+  header.classList.add("blur")
+})
 
 
-
-
-for (i = 0; i < checkbox.length; i++) {
+for (let i = 0; i < checkbox.length; i++) {
   checkbox[i].addEventListener("change", function () {
     if (contactosSeleccionados.length > 0) {
       btnDelete.classList.toggle("display-none")
@@ -265,7 +398,36 @@ for (i = 0; i < checkbox.length; i++) {
   })
 }
 
+//BARRA DE INTERES
 
+document.querySelectorAll(".__range-step").forEach(function (ctrl) {
+  var el = ctrl.querySelector('input');
+  el.oninput = function () {
+    // colorize step options
+    ctrl.querySelectorAll("option").forEach(function (opt) {
+      if (parseInt(opt.value) <= parseInt(iptInteres.value)) {
+        opt.style.backgroundColor = 'green';
+      } else {
+        opt.style.backgroundColor = '#aaa';
+      }
+    });
+    // colorize before and after
+    var valPercent = (el.valueAsNumber - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min));
+    var style = 'background-image: -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(' +
+      valPercent + ', green), color-stop(' +
+      valPercent + ', #aaa));';
+    el.style = style;
+
+  }
+
+  el.oninput();
+});
+window.onresize = function () {
+  document.querySelectorAll(".__range").forEach(function (ctrl) {
+    var el = ctrl.querySelector('input');
+    el.oninput();
+  });
+};
 
 
 btnIngresar.addEventListener("click", function () {
