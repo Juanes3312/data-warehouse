@@ -443,6 +443,20 @@ server.get("/ciudades/:id", (req, res) => {
       res.json(results);
     });
 })
+//traer ciudad en especifico
+server.get("/ciudad/:id", (req, res) => {
+  let {
+    id
+  } = req.params;
+  sequelize
+    .query("SELECT * FROM `ciudades` WHERE `id` = ? ", {
+      replacements: [id],
+      type: sequelize.QueryTypes.SELECT
+    })
+    .then(results => {
+      res.json(results);
+    });
+})
 
 //SECCION DE CONTACTOS
 
@@ -456,7 +470,31 @@ server.get('/contactos', (req,res) =>{
   });
 })
 
-
+server.post("/contactos", validartoken, (req, res) => {
+  let {
+    name,
+    email,
+    id_ciudad,
+    id_compania,
+    cargo,
+    interes,
+  } = req.body
+  sequelize.query("INSERT INTO usuarios (nombre, email, id_ciudad, id_compania, cargo, interes,) VALUE(?,?,?,?,?,?)", {
+      replacements: [name,
+        email,
+        id_ciudad,
+        id_compania,
+        cargo,
+        interes,],
+      type: sequelize.QueryTypes.INSERT
+    })
+    .then(() => {
+      res.status(200).json({
+        mensaje: "todo correcto mi pana"
+      })
+    })
+    
+})
 
 
 
