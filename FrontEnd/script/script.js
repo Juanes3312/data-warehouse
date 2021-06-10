@@ -2,7 +2,8 @@ import {
   fetchRegiones,
   fetchPaises,
   fetchCiudades,
-  fetchCompanias
+  fetchCompanias,
+  guardarContactoDB
 } from "./Fetch/fetch.js"
 let iptPassword = document.getElementById("inputPassword");
 let btnIngresar = document.getElementById("btnIngresar");
@@ -32,13 +33,20 @@ let contacto = document.getElementsByClassName("contacto");
 let btnDelete = document.getElementsByClassName("delete")[0];
 let btnCajaAggContacto = document.getElementById("aggContacto");
 let btnGuardarUsuario = document.getElementById("btnGuardarUsuario")
-let cajaAggContacto = document.getElementById("cajaAggContacto")
+let cajaAggContacto = document.getElementById("cajaAggContacto");
+let key;
 if (storageLocal == null) {
   cajaLogin.classList.remove("display-none")
   container1.classList.add("display-none")
   container2.classList.add("display-none")
   header.classList.add("blur");
 }
+
+btnGuardarUsuario.addEventListener("click", function(){
+  if(validarCampos){
+    guardarContactoDB(iptNombre.value, iptEmail.value, iptCiudad.value, iptCompania.value, iptCargo.value, iptInteres.value)
+  }
+})
 
 xCajaAzul.addEventListener("click", function () {
   cajaAggContacto.classList.add("display-none")
@@ -124,37 +132,22 @@ for(let j = 0 ; j < companias.length; j++){
 
 
 
-function ValidarCampos() {
-  if (iptPassword.value.length == 0 || iptPasswordConf.value.length == 0 ||
-    iptNombre.value.length == 0 || iptApellido.value.length == 0 ||
-    iptEmail.value.length == 0 || iptDireccion.value.length == 0) {
+function validarCampos() {
+  if (iptNombre.value.length == 0 || iptEmail.value.length == 0 ||
+    iptCiudad.value.length == null || iptCompania.value.length == 0 ||
+    iptCargo.value.length == 0 || iptInteres.value.length == 0) {
     alertify
       .alert("Debe rellenar todos los campos", function () {});
     let alerta = document.getElementsByClassName('ajs-header')[0];
     alerta.innerHTML = ""
     return false;
   }
-  if (iptPassword.value != iptPasswordConf.value) {
-    alertify
-      .alert("Las contraseñas deben ser iguales", function () {});
-    let alerta = document.getElementsByClassName('ajs-header')[0];
-    alerta.innerHTML = ""
-    return false;
-  }
+  
   return true;
 };
 
-btnGuardarUsuario.addEventListener("click", async function () {
-  let validacion = await validarCampos();
-  if (validacion) {
-    try {
 
-    } catch {
 
-    }
-  }
-
-});
 
 
 (function checkBoxPrincipal() {

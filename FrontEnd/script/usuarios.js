@@ -17,7 +17,7 @@ let container = document.getElementById("container");
 let key = JSON.parse(sessionStorage.getItem("key"));
 console.log(cajaHeader)
 
-function guardarUsuarioDB(nombre, apellido, email, direccion, password) {
+function guardarUsuarioDB(nombre, apellido, email, direccion, password, key) {
   const nuevoUsuario = {
     "name": nombre,
     "apellido": apellido,
