@@ -54,7 +54,7 @@ async function isAdmin(req,res,next){
 
 function validartoken(req,res,next){
   try {
-      const token = req.headers.token;
+      const {token} = req.headers;
       console.log(token,"si valido");
       const validData = jwt.verify(token, signature);
       if (validData) {
@@ -374,6 +374,21 @@ server.get("/pais/:id", (req, res) => {
     });
 })
 
+server.get("/region/:id", (req, res) => {
+  let {
+    id
+  } = req.params;
+  sequelize
+    .query("SELECT * FROM `regiones` WHERE `id` = ? ", {
+      replacements: [id],
+      type: sequelize.QueryTypes.SELECT
+    })
+    .then(results => {
+      res.json(results);
+    });
+})
+
+
 server.get("/paises", (req, res) => {
   sequelize
     .query("SELECT * FROM `paises`", {
@@ -470,6 +485,16 @@ server.get('/contactos', (req,res) =>{
   });
 })
 
+server.get("/contacto/:id", async function (req,res){
+  const {id} = req.params;
+  console.log(id, 'xd')
+  const respuesta = await sequelize.query('SELECT * FROM contactos WHERE contactos.id = ?', {
+    replacements: [id],
+    type: sequelize.QueryTypes.SELECT
+  });
+  res.status(200).json(respuesta)
+})
+
 server.post("/contactos", validartoken, (req, res) => {
   let {
     name,
@@ -479,7 +504,7 @@ server.post("/contactos", validartoken, (req, res) => {
     cargo,
     interes,
   } = req.body
-  sequelize.query("INSERT INTO usuarios (nombre, email, id_ciudad, id_compania, cargo, interes,) VALUE(?,?,?,?,?,?)", {
+  sequelize.query("INSERT INTO contactos (nombre, email, id_ciudad, id_compania, cargo, interes) VALUE(?,?,?,?,?,?)", {
       replacements: [name,
         email,
         id_ciudad,
@@ -494,6 +519,47 @@ server.post("/contactos", validartoken, (req, res) => {
       })
     })
     
+})
+
+server.put("/contactos/:id", validartoken, (req, res) => {
+  let {
+    name,
+    email,
+    id_ciudad,
+    id_compania,
+    cargo,
+    interes,
+  } = req.body
+  const {id} = req.params;
+  sequelize.query("UPDATE `contactos` SET `nombre` = ?, `email` = ?, `id_ciudad` = ?, `id_compania` = ?,`cargo` = ?, `interes` = ? WHERE `contactos`.`id` = ?", {
+      replacements: [name,
+        email,
+        id_ciudad,
+        id_compania,
+        cargo,
+        interes,
+        id],
+      type: sequelize.QueryTypes.UPDATE
+    })
+    .then(() => {
+      res.status(200).json({
+        mensaje: "Contacto actualizado"
+      })
+    })
+})
+
+server.delete("/contactos/:id", validartoken,(req, res) => {
+  let {
+    id
+  } = req.params
+  sequelize
+    .query("DELETE  FROM `contactos` WHERE `id` = ? ", {
+      replacements: [id],
+      type: sequelize.QueryTypes.DELETE
+    })
+    .then(results => {
+      res.json({mensaje: "contacto borrado"});
+    });
 })
 
 
@@ -608,7 +674,7 @@ server.delete("/usuarios/:id", validartoken,isAdmin,(req, res) => {
       type: sequelize.QueryTypes.DELETE
     })
     .then(results => {
-      res.json(results);
+      res.json({mensaje:"usuario borrado"});
     });
 })
 

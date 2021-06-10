@@ -67,7 +67,7 @@ header a:link, a:visited ,a:active{
     position: relative;
     display: flex;
     top: 18vh;
-    left: 4vw;
+    left: 13vw;
 }
 
 #cajaDatos2 div{
@@ -90,23 +90,26 @@ select{
 #cajaAggContacto{
     width: 80vw;
     left: 10vw;
-    position: relative;
+    position: fixed;
     height: 60vh;
     border: 1px solid black;
     margin-top: 5vh;
+    top: 5vh;
+    z-index:99;
+    background-color: white;
 }
 
 #xCajaAzul{
     cursor: pointer;
 }
 
-#btnCajaGuardarUsuario{
+#btnCajaGuardarUsuario,#btnCajaEditarUsuario{
     position: relative;
     left: 3vw;
     top: 10vh;
 }
 
-#btnCajaGuardarUsuario button{
+#btnCajaGuardarUsuario button, #btnCajaEditarUsuario button{
     height: 8vh;
 }
 

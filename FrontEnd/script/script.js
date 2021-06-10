@@ -3,7 +3,15 @@ import {
   fetchPaises,
   fetchCiudades,
   fetchCompanias,
-  guardarContactoDB
+  guardarContactoDB,
+  updateContactos,
+  deleteContactos,
+  fetchPais,
+  fetchCiudad,
+  fetchCompania,
+  fetchContacto,
+  fetchContactos,
+  fetchRegion
 } from "./Fetch/fetch.js"
 let iptPassword = document.getElementById("inputPassword");
 let btnIngresar = document.getElementById("btnIngresar");
@@ -11,7 +19,8 @@ let storageLocal = JSON.parse(sessionStorage.getItem("key"));
 let cajaLogin = document.getElementById('login');
 let container1 = document.getElementById("container1");
 let container2 = document.getElementById("container2");
-let xCajaAzul = document.getElementById("xCajaAzul")
+let xCajaAzul = document.getElementById("xCajaAzul");
+let cajaAzul = document.getElementById("cajaAzul")
 //console.log(storageLocal)
 let header = document.getElementsByName("navbar")[0]
 let usuariosHeader = document.getElementById("usuariosHeader");
@@ -20,33 +29,54 @@ let checkbox = document.getElementsByClassName("checkBox")
 let contactosSeleccionados = [];
 let trContacto;
 let iptNombre = document.getElementById("inputNombre");
+let iptNombreCont = document.getElementById("inputNombreCont")
 let iptCargo = document.getElementById("inputCargo");
 let iptEmail = document.getElementById("inputEmail");
 let iptCompania = document.getElementById("selectCompania");
 let iptRegion = document.getElementById("selectRegion");
 let iptPais = document.getElementById("selectPais");
 let iptCiudad = document.getElementById("selectCiudad")
-let iptDireccion = document.getElementById("iptDireccion");
+
 let iptInteres = document.getElementById("iptInteres")
 //let checkBox;
 let contacto = document.getElementsByClassName("contacto");
 let btnDelete = document.getElementsByClassName("delete")[0];
 let btnCajaAggContacto = document.getElementById("aggContacto");
-let btnGuardarUsuario = document.getElementById("btnGuardarUsuario")
+let btnGuardarUsuario = document.getElementById("btnGuardarUsuario");
+let btnEditarUsuario = document.getElementById("btnEditarUsuario");
+let btnDeleteUsuario =document.getElementById("btnBorrar");
 let cajaAggContacto = document.getElementById("cajaAggContacto");
 let key;
+let id;
+
 if (storageLocal == null) {
   cajaLogin.classList.remove("display-none")
   container1.classList.add("display-none")
   container2.classList.add("display-none")
   header.classList.add("blur");
+}else{
+  key = storageLocal;
 }
 
-btnGuardarUsuario.addEventListener("click", function(){
-  if(validarCampos){
-    guardarContactoDB(iptNombre.value, iptEmail.value, iptCiudad.value, iptCompania.value, iptCargo.value, iptInteres.value)
+key = storageLocal;
+
+btnGuardarUsuario.addEventListener("click",async function(){
+  let validacion = await validarCampos(); 
+  console.log(iptCiudad.value)
+  console.log(validacion);
+  if(validacion){
+    console.log(key, "soy key");
+    guardarContactoDB(iptNombreCont.value, iptEmail.value, iptCiudad.value, iptCompania.value, iptCargo.value, iptInteres.value, key)
   }
 })
+
+btnDeleteUsuario.addEventListener("click", function(){
+  for(let i = 0 ; i<contactosSeleccionados.length; i++){
+    console.log(contactosSeleccionados[i]);
+    deleteContactos(contactosSeleccionados[i], key);
+  }
+})
+
 
 xCajaAzul.addEventListener("click", function () {
   cajaAggContacto.classList.add("display-none")
@@ -133,9 +163,11 @@ for(let j = 0 ; j < companias.length; j++){
 
 
 function validarCampos() {
-  if (iptNombre.value.length == 0 || iptEmail.value.length == 0 ||
-    iptCiudad.value.length == null || iptCompania.value.length == 0 ||
+  if (iptNombreCont.value.length == 0 || iptEmail.value.length == 0 ||
+    iptCiudad.value.length == 0 || iptCompania.value.length == 0 ||
     iptCargo.value.length == 0 || iptInteres.value.length == 0) {
+      console.log("holaa", iptNombreCont.value)
+    console.log(iptNombreCont.value.length, iptEmail.value.length, iptCiudad.value.length,iptCompania.value.length, iptCargo.value.length, iptInteres.value.length )
     alertify
       .alert("Debe rellenar todos los campos", function () {});
     let alerta = document.getElementsByClassName('ajs-header')[0];
@@ -145,9 +177,6 @@ function validarCampos() {
   
   return true;
 };
-
-
-
 
 
 (function checkBoxPrincipal() {
@@ -183,32 +212,6 @@ function validarCampos() {
     console.log(contactosSeleccionados);
   }, false);
 })();
-
-
-
-async function fetchPais(id) {
-  let url = 'http://localhost:4000/pais/' + id;
-  let response = await fetch(url);
-  let json = await response.json();
-  //console.log(json)
-  return json;
-}
-
-async function fetchCiudad(id) {
-  let url = 'http://localhost:4000/ciudad/' + id;
-  let response = await fetch(url);
-  let json = await response.json();
-  //console.log(json)
-  return json;
-}
-
-async function fetchCompania(id) {
-  let url = 'http://localhost:4000/compania/' + id;
-  let response = await fetch(url);
-  let json = await response.json();
-  //console.log(json)
-  return json;
-}
 
 
 
@@ -251,16 +254,6 @@ function Login(nombre, password) {
       console.log(error)
     })
 }
-
-async function fetchContactos() {
-  let url = 'http://localhost:4000/contactos';
-  let response = await fetch(url);
-  let json = await response.json();
-  //console.log(json)
-  return json;
-}
-
-
 
 
 async function agregarContactos() {
@@ -365,10 +358,71 @@ async function agregarContactos() {
     let tdAcciones = document.createElement("td");
     trContacto.appendChild(tdAcciones);
     let btnEditar = document.createElement('button');
+    btnEditar.addEventListener("click", async function(){
+      id = btnEditar.parentElement.parentElement.getAttribute("data")
+      btnGuardarUsuario.classList.add("display-none");
+      btnEditarUsuario.classList.remove("display-none")
+      cajaAggContacto.classList.remove("display-none");
+      cajaAzul.firstElementChild.innerHTML = "Editar Contacto";
+      container1.classList.add("blur");
+      container2.classList.add("blur");
+      header.classList.add("blur");
+      let contacto = await fetchContacto(id);
+      console.log(trContacto.getAttribute("data"), "soy data")
+      iptNombreCont.value = contacto[0].nombre;
+      iptEmail.value = contacto[0].email;
+      console.log(contacto[0], "soy el contacto de id ciudad")
+      let ciudad = await fetchCiudad(contacto[0].id_ciudad)
+      let optC = document.createElement("option");
+      optC.innerHTML = ciudad[0].nombre;
+      optC.setAttribute("selected", "");
+      optC.setAttribute("hidden", "");
+      optC.setAttribute("value", ciudad[0].id);
+      iptCiudad.appendChild(optC);
+      let pais = await fetchPais(ciudad[0].pais_id);
+      let optP = document.createElement("option");
+      optP.innerHTML = pais[0].nombre;
+      console.log(pais[0].nombre,"xd")
+      optP.setAttribute("selected", "");
+      optP.setAttribute("hidden", "")
+      //optP.setAttribute("value", pais[0].id)
+      iptPais.appendChild(optP);
+      iptPais.value = pais[0].nombre;
+      let region = await fetchRegion(pais[0].region_id);
+      for(let i = 0 ; i<iptRegion.options.length; i++){
+        if(iptRegion.options[i].value == region[0].id){
+          iptRegion.options[i].setAttribute("selected", "");
+        }
+      }
+      let compania = await fetchCompania(contacto[0].id_compania);
+      for(let i = 0 ; i<iptCompania.options.length; i++){
+        
+        if(iptCompania.options[i].value == compania[0].id){
+          iptCompania.options[i].setAttribute("selected", "");
+        }
+      }
+      iptCargo.value = contacto[0].cargo;
+      for(let i = 0 ; i<iptInteres.list.options.length; i++){
+        console.log(parseInt(iptInteres.list.options[i].value), "xd1")
+        console.log(contacto[0].interes, "xd2")
+        if(parseInt(iptInteres.list.options[i].value) == contacto[0].interes){
+          iptInteres.list.options[i].setAttribute("selected", "");
+          iptInteres.setAttribute("value",contacto[0].interes)
+        }
+      }
+      
+    })
     btnEditar.innerHTML = "Editar"
-    tdAcciones.appendChild(btnEditar)
+    tdAcciones.appendChild(btnEditar);
   }
 }
+
+btnEditarUsuario.addEventListener("click", function(){
+  console.log(id, "soy id")
+  updateContactos(iptNombreCont.value, iptEmail.value, iptCiudad.value, iptCompania.value, iptCargo.value, iptInteres.value, key, id)
+})
+
+
 
 agregarContactos();
 
