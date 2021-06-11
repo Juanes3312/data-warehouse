@@ -84,7 +84,7 @@ async function BuscarContactos(palabraBuscar){
        idCompaniaEncontrado = companias[i].id;
      }
    }
-  fetchContactosParams('a', "as", "asdd" , idCompaniaEncontrado,"asdd" )
+   fetchContactosParams('a', "as", "asdd" , idCompaniaEncontrado,"asdd" )
 }
 lupa.addEventListener("click", function(){
   console.log("oeoeoe")

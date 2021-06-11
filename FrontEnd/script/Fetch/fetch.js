@@ -23,10 +23,11 @@ export async function fetchCiudades(num) {
 }
 
 export async function fetchContactosParams(nombre, email, ciudad, compania, cargo) {
-  let url = 'http://localhost:4000/contactos/' + nombre + "/" + email+ "/" + ciudad+ "/" + compania+ "/" + cargo;
+  let url = 'http://localhost:4000/contactoBuscar?nombre=' + nombre
+  //let url = 'http://localhost:4000/contactoBuscar?nombre=' + nombre + "&email=" + email+ "&ciudad=" + ciudad+ "&compania=" + compania+ "&cargo=" + cargo;
   let response = await fetch(url);
   let json = await response.json();
-  console.log(json);
+  console.log(json, "si paso por fetchContactosParams");
   return json;
 }
 
