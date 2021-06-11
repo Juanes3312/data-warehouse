@@ -490,19 +490,17 @@ server.get("/ciudad/:id", (req, res) => {
 
 //SECCION DE CONTACTOS
 
-server.get("/contactoBuscar"), (req, res) => {
+server.get("/buscarContactos", (req, res) => {
   console.log(req.query, "soy queriess ");
-  /*sequelize.query("SELECT * FROM contactos WHERE nombre = ? OR email = ?, ciudad = ?, compania = ?, cargo = ?", {
-    replacements: [nombre, email, ciudad, compania, cargo],
+  let {nombre, email , ciudad, compania, cargo, pais} = req.query;
+  sequelize.query("SELECT * FROM `contactos` WHERE `nombre` = ? OR `email` = ? OR `id_ciudad` = ? OR `id_compania` = ? OR `cargo` = ? OR id_ciudad IN (?)", {
+    replacements: [nombre, email, ciudad, compania, cargo, pais, ciudadesArray],
     type: sequelize.QueryTypes.SELECT
   })
   .then(results =>{
     res.json(results);
-  })*/
-  res.status(200).send({
-    mensaje: "estamos melos"
   })
-}
+})
 
 server.get('/contactos', (req, res) => {
   sequelize
