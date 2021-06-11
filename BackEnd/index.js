@@ -492,9 +492,11 @@ server.get("/ciudad/:id", (req, res) => {
 
 server.get("/buscarContactos", (req, res) => {
   console.log(req.query, "soy queriess ");
-  let {nombre, email , ciudad, compania, cargo, pais} = req.query;
-  sequelize.query("SELECT * FROM `contactos` WHERE `nombre` = ? OR `email` = ? OR `id_ciudad` = ? OR `id_compania` = ? OR `cargo` = ? OR id_ciudad IN (?)", {
-    replacements: [nombre, email, ciudad, compania, cargo, pais, ciudadesArray],
+  let {nombre, email , ciudad, compania, cargo, ciudadesArray} = req.query;
+  console.log(ciudadesArray, "ey bueno");
+
+  sequelize.query("SELECT * FROM `contactos` WHERE `nombre` = ? OR `email` = ? OR `id_ciudad` = ? OR `id_compania` = ? OR `cargo` = ? OR id_ciudad INS  (:ids)", {
+    replacements: [nombre, email, ciudad, compania, cargo, {ids:ciudadesArray}],
     type: sequelize.QueryTypes.SELECT
   })
   .then(results =>{

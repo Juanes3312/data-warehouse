@@ -12,7 +12,8 @@ import {
   fetchContacto,
   fetchContactos,
   fetchRegion,
-  fetchContactosParams
+  fetchContactosParams,
+  fetchPaisesSinRegion
 } from "./Fetch/fetch.js"
 let iptPassword = document.getElementById("inputPassword");
 let btnIngresar = document.getElementById("btnIngresar");
@@ -76,26 +77,39 @@ async function BuscarContactos(palabraBuscar){
   console.log(palabra);
   let idCiudadEncontrado = 0;
   let idCompaniaEncontrado = 0;
-
+  let idPaisEncontrado = 0;
+  let ciudadesArray = [];
+  let idDeCiudades;
   let companias  = await fetchCompanias();
    for(let i = 0 ; i<companias.length; i++){
-     console.log(palabra, "ey mi loco soy la palabra");
-     console.log(companias[i].nombre, "ey mi loco soy la comp")
+     //console.log(palabra, "ey mi loco soy la palabra");
+     //console.log(companias[i].nombre, "ey mi loco soy la comp")
      if(palabra == companias[i].nombre){
        console.log("ey mi loco soy el id que buscas", companias[i].id);
        idCompaniaEncontrado = companias[i].id;
      }
    }
-   let paises = await fetchPaises();
+   let paises = await fetchPaisesSinRegion();
    for(let i = 0 ; i<paises.length; i++){
     console.log(palabra, "ey mi loco soy la palabra");
-    console.log(companias[i].nombre, "ey mi loco soy la comp")
+    console.log(paises[i].nombre, "ey mi loco soy la comp")
     if(palabra == paises[i].nombre){
       console.log("ey mi loco soy el id que buscas", paises[i].id);
-      idCompaniaEncontrado = companias[i].id;
+      idPaisEncontrado = paises[i].id;
+      let ciudades = await fetchCiudades(idPaisEncontrado);
+      console.log(ciudades , "ey bueno")
+      for(let e = 0 ; e<ciudades.length; e++){
+        //console.log(ciudades[e], "Soy ciudades[e]")
+    
+        ciudadesArray.push(parseInt(ciudades[e].id));
+      }
+      idDeCiudades = ciudadesArray.join(",")
+      console.log(ciudadesArray, "soy ciudades", 1);
+
     }
   }
-   fetchContactosParams('a', "as", "asdd" , idCompaniaEncontrado,"asdd", [])
+  
+   fetchContactosParams('a', "as", "asdd" , idCompaniaEncontrado,"asdd", ciudadesArray)
 }
 lupa.addEventListener("click", function(){
   console.log("oeoeoe")
@@ -353,7 +367,7 @@ async function agregarContactos() {
     let ciudad = await fetchCiudad(contactos[i].id_ciudad);
     for (let e = 0; e < ciudad.length; e++) {
       let pais = await fetchPais(ciudad[e].pais_id)
-      tdPais.innerHTML = pais[e].nombre;
+      tdPais.innerHTML = primeraLetraMayuscula(pais[e].nombre);
       trContacto.appendChild(tdPais);
     }
     let tdCompania = document.createElement("td");
