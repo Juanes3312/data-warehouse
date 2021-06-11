@@ -16,13 +16,21 @@ export async function fetchPaises(num) {
 
 export async function fetchCiudades(num) {
     let url = 'http://localhost:4000/ciudades/' + num;
-    let response = await fetch(url, );
+    let response = await fetch(url);
     let json = await response.json();
     //console.log(json);
     return json;
 }
 
-export async function fetchCompanias(num) {
+export async function fetchContactosParams(nombre, email, ciudad, compania, cargo) {
+  let url = 'http://localhost:4000/contactos/' + nombre + "/" + email+ "/" + ciudad+ "/" + compania+ "/" + cargo;
+  let response = await fetch(url);
+  let json = await response.json();
+  console.log(json);
+  return json;
+}
+
+export async function fetchCompanias() {
     let url = 'http://localhost:4000/companias/';
     let response = await fetch(url);
     let json = await response.json();

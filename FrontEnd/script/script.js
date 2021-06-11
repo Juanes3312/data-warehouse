@@ -11,7 +11,8 @@ import {
   fetchCompania,
   fetchContacto,
   fetchContactos,
-  fetchRegion
+  fetchRegion,
+  fetchContactosParams
 } from "./Fetch/fetch.js"
 let iptPassword = document.getElementById("inputPassword");
 let btnIngresar = document.getElementById("btnIngresar");
@@ -48,7 +49,8 @@ let btnDeleteUsuario =document.getElementById("btnBorrar");
 let cajaAggContacto = document.getElementById("cajaAggContacto");
 let key;
 let id;
-
+let barraBusquedad = document.getElementById("barraBusquedad");
+let lupa = document.getElementById("lupita")
 if (storageLocal == null) {
   cajaLogin.classList.remove("display-none")
   container1.classList.add("display-none")
@@ -59,6 +61,36 @@ if (storageLocal == null) {
 }
 
 key = storageLocal;
+
+console.log(lupa);
+
+
+const primeraLetraMayuscula = (cadena) => {
+  const primerCaracter = cadena.charAt(0).toUpperCase();
+  const restoDeLaCadena = cadena.substring(1, cadena.length);
+  return primerCaracter.concat(restoDeLaCadena);
+}
+
+async function BuscarContactos(palabraBuscar){
+  let palabra = palabraBuscar.toLowerCase();
+  console.log(palabra);
+  let idCompaniaEncontrado = 0; 
+  let companias  = await fetchCompanias();
+   for(let i = 0 ; i<companias.length; i++){
+     //console.log(palabra, "ey mi loco soy la palabra");
+     //console.log(companias[i].nombre, "ey mi loco soy la comp")
+     if(palabra == companias[i].nombre){
+       console.log("ey mi loco soy el id que buscas", companias[i].id);
+       idCompaniaEncontrado = companias[i].id;
+     }
+   }
+  fetchContactosParams('a', "as", "asdd" , idCompaniaEncontrado,"asdd" )
+}
+lupa.addEventListener("click", function(){
+  console.log("oeoeoe")
+  BuscarContactos(barraBusquedad.value)
+})
+
 
 btnGuardarUsuario.addEventListener("click",async function(){
   let validacion = await validarCampos(); 
@@ -317,7 +349,7 @@ async function agregarContactos() {
     tdCompania.setAttribute("id", "compania");
     let compania = await fetchCompania(contactos[i].id_compania)
     for (let e = 0; e < compania.length; e++) {
-      tdCompania.innerHTML = compania[e].nombre;
+      tdCompania.innerHTML = primeraLetraMayuscula(compania[e].nombre);
       trContacto.appendChild(tdCompania);
     }
     let tdCargo = document.createElement("td");
@@ -407,7 +439,7 @@ async function agregarContactos() {
         console.log(contacto[0].interes, "xd2")
         if(parseInt(iptInteres.list.options[i].value) == contacto[0].interes){
           iptInteres.list.options[i].setAttribute("selected", "");
-          iptInteres.setAttribute("value",contacto[0].interes)
+          //iptInteres.setAttribute("value",contacto[0].interes)
         }
       }
       
@@ -421,6 +453,8 @@ btnEditarUsuario.addEventListener("click", function(){
   console.log(id, "soy id")
   updateContactos(iptNombreCont.value, iptEmail.value, iptCiudad.value, iptCompania.value, iptCargo.value, iptInteres.value, key, id)
 })
+
+
 
 
 

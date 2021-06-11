@@ -9,66 +9,73 @@ server.use(cors());
 server.use(express.json());
 server.use(compression());
 
-async function validarSiExiste(req, res, next){
+async function validarSiExiste(req, res, next) {
   const usuarios = await traerUsuarios();
-  const {email} = req.body;
+  const {
+    email
+  } = req.body;
   console.log("si verifico")
   const i = usuarios.findIndex(c => {
-      return c.email == email; 
+    return c.email == email;
   })
   //console.log(i)
   if (i >= 0) {
-      return res.status(409)
-          .json({
-              status: 'Error',
-              mensaje: 'El contacto ya existe'
-          });
+    return res.status(409)
+      .json({
+        status: 'Error',
+        mensaje: 'El contacto ya existe'
+      });
   }
   return next();
 }
 
-async function isAdmin(req,res,next){
+async function isAdmin(req, res, next) {
   const token = req.headers['token']
   const decoded = jwt.verify(token, signature);
-  console.log(decoded , " soy decoded");
+  console.log(decoded, " soy decoded");
   let j;
   const usuarios = await traerUsuarios();
   const i = usuarios.findIndex(c => {
-      return c.nombre == decoded.nombre; 
+    return c.nombre == decoded.nombre;
   })
-  if( i > -1){
+  if (i > -1) {
     let e = usuarios[i];
-    if(e.password == decoded.password){
-       j = usuarios[i]; 
+    if (e.password == decoded.password) {
+      j = usuarios[i];
     }
   }
-  if(j.admin == 1){
-      return next();
-  }else{
-      res.status(403).json({
-          auth:false,
-          message: 'No tienes permisos para esta accion'
-      })
+  if (j.admin == 1) {
+    return next();
+  } else {
+    res.status(403).json({
+      auth: false,
+      message: 'No tienes permisos para esta accion'
+    })
   }
 }
 
-function validartoken(req,res,next){
+function validartoken(req, res, next) {
   try {
-      const {token} = req.headers;
-      console.log(token,"si valido");
-      const validData = jwt.verify(token, signature);
-      if (validData) {
-        req.userData = validData.userData;
-        next();
-      }
-    } catch (err) {
-      // res.statusMessage = ' xd ';
-      res.status(401).json({success: false, mensaje: "Error al validar usuario. Prueba un token válido."});
+    const {
+      token
+    } = req.headers;
+    console.log(token, "si valido");
+    const validData = jwt.verify(token, signature);
+    if (validData) {
+      req.userData = validData.userData;
+      next();
     }
+  } catch (err) {
+    // res.statusMessage = ' xd ';
+    res.status(401).json({
+      success: false,
+      mensaje: "Error al validar usuario. Prueba un token válido."
+    });
+  }
 }
 
 
-function getToken(data){
+function getToken(data) {
   const resp = jwt.sign(data, signature);
   return resp;
 }
@@ -77,39 +84,41 @@ function getToken(data){
 //SECCION DEL LOGIN
 async function validarLogin(req, res, next) {
   const usuarios = await traerUsuarios();
-  let {nombre, password} = req.body;
+  let {
+    nombre,
+    password
+  } = req.body;
   nombre = nombre.trim();
   password = password.trim()
   const i = usuarios.findIndex(c => {
-      return c.nombre == nombre; 
+    return c.nombre == nombre;
   })
   console.log(i, "soy i")
-  if( i > -1){
-      let e = usuarios[i];
-      if(e.password == password){
-          req.Objeto = usuarios[i];
-          next();
-      }
-      else{
-          return res.status(409)
-          .send({
-              status: 'Error',
-              mensaje: 'el contacto no existe o los datos son incorrectos'
-          });
-      }
+  if (i > -1) {
+    let e = usuarios[i];
+    if (e.password == password) {
+      req.Objeto = usuarios[i];
+      next();
+    } else {
+      return res.status(409)
+        .send({
+          status: 'Error',
+          mensaje: 'el contacto no existe o los datos son incorrectos'
+        });
+    }
   }
   //console.log(usuarios)
   if (i == -1) {
-      return res.status(409)
-          .send({
-              status: 'Error',
-              mensaje: 'el contacto no existe'
-          });
+    return res.status(409)
+      .send({
+        status: 'Error',
+        mensaje: 'el contacto no existe'
+      });
   }
   return next();
 }
 
-server.post("/login", validarLogin, function (req,res){
+server.post("/login", validarLogin, function (req, res) {
   const x = req.Objeto
   console.log(x);
   let token;
@@ -126,7 +135,7 @@ server.post("/login", validarLogin, function (req,res){
 
 
 //SECCION DE COMPAÑIAS
-server.get("/companias", (req,res)=>{
+server.get("/companias", (req, res) => {
   sequelize
     .query("SELECT * FROM companias", {
       type: sequelize.QueryTypes.SELECT
@@ -136,12 +145,14 @@ server.get("/companias", (req,res)=>{
     });
 })
 
-server.post('/companias',validartoken, (req, res) => {
+server.post('/companias', validartoken, (req, res) => {
   const {
-nombre, pais, direccion
+    nombre,
+    pais,
+    direccion
   } = req.body;
   sequelize.query("INSERT INTO companias (nombre, pais, direccion) VALUE(?,?,?)", {
-      replacements: [nombre, pais , direccion],
+      replacements: [nombre, pais, direccion],
       type: sequelize.QueryTypes.INSERT
     })
     .then(() => {
@@ -151,8 +162,10 @@ nombre, pais, direccion
     })
 })
 
-server.get("/compania/:id", async function (req,res){
-  const {id} = req.params;
+server.get("/compania/:id", async function (req, res) {
+  const {
+    id
+  } = req.params;
   console.log(id, 'xd')
   const respuesta = await sequelize.query('SELECT * FROM companias WHERE companias.id = ?', {
     replacements: [id],
@@ -170,10 +183,12 @@ async function traerCompania(id) {
 }
 
 
-server.put("/companias/:id", validartoken,async function (req, res) {
+server.put("/companias/:id", validartoken, async function (req, res) {
   const id = req.params.id;
   const {
-    nombre, pais, direccion
+    nombre,
+    pais,
+    direccion
   } = req.body
   console.log(nombre, "soy nombre")
   const compania = await traerCompania(id);
@@ -201,7 +216,7 @@ server.put("/companias/:id", validartoken,async function (req, res) {
 });
 
 
-server.delete("/companias/:id",validartoken,(req, res) => {
+server.delete("/companias/:id", validartoken, (req, res) => {
   let {
     id
   } = req.params;
@@ -238,7 +253,7 @@ server.post('/paises', (req, res) => {
 })
 
 //eliminar un pais
-server.delete("/paises/:id",(req, res) => {
+server.delete("/paises/:id", (req, res) => {
   let {
     id
   } = req.params;
@@ -475,18 +490,37 @@ server.get("/ciudad/:id", (req, res) => {
 
 //SECCION DE CONTACTOS
 
-server.get('/contactos', (req,res) =>{
-  sequelize
-  .query("SELECT * FROM `contactos`", {
+server.get("/contactos/:nombre/:email/:ciudad/:compania/:cargo"), (req, res) => {
+  const {
+    nombre,
+    email,
+    ciudad,
+    compania,
+    cargo
+  } = req.params;
+  sequelize.query("SELECT * FROM contactos WHERE nombre = ? OR email = ?, ciudad = ?, compania = ?, cargo = ?", {
+    replacements: [nombre, email, ciudad, compania, cargo],
     type: sequelize.QueryTypes.SELECT
   })
-  .then(results => {
+  .then(results =>{
     res.json(results);
-  });
+  })
+}
+
+server.get('/contactos', (req, res) => {
+  sequelize
+    .query("SELECT * FROM `contactos`", {
+      type: sequelize.QueryTypes.SELECT
+    })
+    .then(results => {
+      res.json(results);
+    });
 })
 
-server.get("/contacto/:id", async function (req,res){
-  const {id} = req.params;
+server.get("/contacto/:id", async function (req, res) {
+  const {
+    id
+  } = req.params;
   console.log(id, 'xd')
   const respuesta = await sequelize.query('SELECT * FROM contactos WHERE contactos.id = ?', {
     replacements: [id],
@@ -510,7 +544,8 @@ server.post("/contactos", validartoken, (req, res) => {
         id_ciudad,
         id_compania,
         cargo,
-        interes,],
+        interes,
+      ],
       type: sequelize.QueryTypes.INSERT
     })
     .then(() => {
@@ -518,7 +553,7 @@ server.post("/contactos", validartoken, (req, res) => {
         mensaje: "todo correcto mi pana"
       })
     })
-    
+
 })
 
 server.put("/contactos/:id", validartoken, (req, res) => {
@@ -530,7 +565,9 @@ server.put("/contactos/:id", validartoken, (req, res) => {
     cargo,
     interes,
   } = req.body
-  const {id} = req.params;
+  const {
+    id
+  } = req.params;
   sequelize.query("UPDATE `contactos` SET `nombre` = ?, `email` = ?, `id_ciudad` = ?, `id_compania` = ?,`cargo` = ?, `interes` = ? WHERE `contactos`.`id` = ?", {
       replacements: [name,
         email,
@@ -538,7 +575,8 @@ server.put("/contactos/:id", validartoken, (req, res) => {
         id_compania,
         cargo,
         interes,
-        id],
+        id
+      ],
       type: sequelize.QueryTypes.UPDATE
     })
     .then(() => {
@@ -548,7 +586,7 @@ server.put("/contactos/:id", validartoken, (req, res) => {
     })
 })
 
-server.delete("/contactos/:id", validartoken,(req, res) => {
+server.delete("/contactos/:id", validartoken, (req, res) => {
   let {
     id
   } = req.params
@@ -558,7 +596,9 @@ server.delete("/contactos/:id", validartoken,(req, res) => {
       type: sequelize.QueryTypes.DELETE
     })
     .then(results => {
-      res.json({mensaje: "contacto borrado"});
+      res.json({
+        mensaje: "contacto borrado"
+      });
     });
 })
 
@@ -578,13 +618,15 @@ async function traerUsuario(id) {
 
 async function traerUsuarios() {
   const res = await sequelize.query('SELECT * FROM usuarios', {
-      type: sequelize.QueryTypes.SELECT
+    type: sequelize.QueryTypes.SELECT
   })
   return res;
 }
 
-server.get("/usuario/:id", async function (req,res){
-  const {id} = req.params;
+server.get("/usuario/:id", async function (req, res) {
+  const {
+    id
+  } = req.params;
   console.log(id, 'xd')
   const respuesta = await sequelize.query('SELECT * FROM usuarios WHERE usuarios.id = ?', {
     replacements: [id],
@@ -593,55 +635,60 @@ server.get("/usuario/:id", async function (req,res){
   res.status(200).json(respuesta)
 })
 
-server.put("/usuarios/admin/:id",validartoken, isAdmin, (req,res)=>{
-  const {id} = req.params;
-  sequelize.query("UPDATE `usuarios` SET `admin` = 1 WHERE `usuarios`.`id` = ?",
-          {
-              replacements:[
-                  id
-              ],
-              type: sequelize.QueryTypes.UPDATE
-          }
-      )
-      .then(()=>{
-          res.status(200).json({
-              "status" : "ok",
-              "mensaje": "el usuario ha sido admin"
-          })
+server.put("/usuarios/admin/:id", validartoken, isAdmin, (req, res) => {
+  const {
+    id
+  } = req.params;
+  sequelize.query("UPDATE `usuarios` SET `admin` = 1 WHERE `usuarios`.`id` = ?", {
+      replacements: [
+        id
+      ],
+      type: sequelize.QueryTypes.UPDATE
+    })
+    .then(() => {
+      res.status(200).json({
+        "status": "ok",
+        "mensaje": "el usuario ha sido admin"
       })
-}) 
-
-server.put('/usuarios/:id', validartoken, function(req,res){
-  const {id} = req.params;
-  const {nombre,apellido,email,direccion} = req.body;
-      sequelize.query("UPDATE `usuarios` SET `nombre` = ?, `apellido` = ?, `email` = ?, `direccion` = ? WHERE `usuarios`.`id` = ?",
-          {
-              replacements:[
-                  nombre,
-                  apellido,
-                  email,
-                  direccion,
-                  id
-              ],
-              type: sequelize.QueryTypes.UPDATE
-          }
-      )
-      .then(()=>{
-          res.status(200).json({
-              "status" : "ok",
-              "mensaje": "el usuario ha sido actualizado"
-          })
-      })
+    })
 })
 
-server.get('/usuarios', (req,res) =>{
+server.put('/usuarios/:id', validartoken, function (req, res) {
+  const {
+    id
+  } = req.params;
+  const {
+    nombre,
+    apellido,
+    email,
+    direccion
+  } = req.body;
+  sequelize.query("UPDATE `usuarios` SET `nombre` = ?, `apellido` = ?, `email` = ?, `direccion` = ? WHERE `usuarios`.`id` = ?", {
+      replacements: [
+        nombre,
+        apellido,
+        email,
+        direccion,
+        id
+      ],
+      type: sequelize.QueryTypes.UPDATE
+    })
+    .then(() => {
+      res.status(200).json({
+        "status": "ok",
+        "mensaje": "el usuario ha sido actualizado"
+      })
+    })
+})
+
+server.get('/usuarios', (req, res) => {
   sequelize
-  .query("SELECT * FROM `usuarios`", {
-    type: sequelize.QueryTypes.SELECT
-  })
-  .then(results => {
-    res.json(results);
-  });
+    .query("SELECT * FROM `usuarios`", {
+      type: sequelize.QueryTypes.SELECT
+    })
+    .then(results => {
+      res.json(results);
+    });
 })
 
 server.post("/usuarios", validartoken, validarSiExiste, (req, res) => {
@@ -661,10 +708,10 @@ server.post("/usuarios", validartoken, validarSiExiste, (req, res) => {
         mensaje: "todo correcto mi pana"
       })
     })
-    
+
 })
 
-server.delete("/usuarios/:id", validartoken,isAdmin,(req, res) => {
+server.delete("/usuarios/:id", validartoken, isAdmin, (req, res) => {
   let {
     id
   } = req.params
@@ -674,7 +721,9 @@ server.delete("/usuarios/:id", validartoken,isAdmin,(req, res) => {
       type: sequelize.QueryTypes.DELETE
     })
     .then(results => {
-      res.json({mensaje:"usuario borrado"});
+      res.json({
+        mensaje: "usuario borrado"
+      });
     });
 })
 
