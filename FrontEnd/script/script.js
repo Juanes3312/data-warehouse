@@ -74,17 +74,28 @@ const primeraLetraMayuscula = (cadena) => {
 async function BuscarContactos(palabraBuscar){
   let palabra = palabraBuscar.toLowerCase();
   console.log(palabra);
-  let idCompaniaEncontrado = 0; 
+  let idCiudadEncontrado = 0;
+  let idCompaniaEncontrado = 0;
+
   let companias  = await fetchCompanias();
    for(let i = 0 ; i<companias.length; i++){
-     //console.log(palabra, "ey mi loco soy la palabra");
-     //console.log(companias[i].nombre, "ey mi loco soy la comp")
+     console.log(palabra, "ey mi loco soy la palabra");
+     console.log(companias[i].nombre, "ey mi loco soy la comp")
      if(palabra == companias[i].nombre){
        console.log("ey mi loco soy el id que buscas", companias[i].id);
        idCompaniaEncontrado = companias[i].id;
      }
    }
-   fetchContactosParams('a', "as", "asdd" , idCompaniaEncontrado,"asdd" )
+   let paises = await fetchPaises();
+   for(let i = 0 ; i<paises.length; i++){
+    console.log(palabra, "ey mi loco soy la palabra");
+    console.log(companias[i].nombre, "ey mi loco soy la comp")
+    if(palabra == paises[i].nombre){
+      console.log("ey mi loco soy el id que buscas", paises[i].id);
+      idCompaniaEncontrado = companias[i].id;
+    }
+  }
+   fetchContactosParams('a', "as", "asdd" , idCompaniaEncontrado,"asdd", [])
 }
 lupa.addEventListener("click", function(){
   console.log("oeoeoe")

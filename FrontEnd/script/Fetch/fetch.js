@@ -22,9 +22,9 @@ export async function fetchCiudades(num) {
     return json;
 }
 
-export async function fetchContactosParams(nombre, email, ciudad, compania, cargo) {
-  let url = 'http://localhost:4000/contactoBuscar?nombre=' + nombre
-  //let url = 'http://localhost:4000/contactoBuscar?nombre=' + nombre + "&email=" + email+ "&ciudad=" + ciudad+ "&compania=" + compania+ "&cargo=" + cargo;
+export async function fetchContactosParams(nombre, email, ciudad, compania, cargo, ciudadesArray) {
+  //let url = 'http://localhost:4000/contactoBuscar?nombre=' + nombre
+  let url = 'http://localhost:4000/buscarContactos?nombre=' + nombre + "&email=" + email+ "&ciudad=" + ciudad+ "&compania=" + compania+ "&cargo=" + cargo + "&ciudadesArray=" + ciudadesArray;
   let response = await fetch(url);
   let json = await response.json();
   console.log(json, "si paso por fetchContactosParams");
