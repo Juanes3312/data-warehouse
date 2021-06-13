@@ -16,7 +16,7 @@ export async function fetchPaises(num) {
 
 export async function fetchPaisesSinRegion() {
   let url = 'http://localhost:4000/paises';
-  let response = await fetch(url, );
+  let response = await fetch(url);
   let json = await response.json();
   //console.log(json);
   return json;
@@ -28,6 +28,14 @@ export async function fetchCiudades(num) {
     let json = await response.json();
     //console.log(json);
     return json;
+}
+
+export async function fetchCiudadesSinPais(){
+  let url = 'http://localhost:4000/ciudades';
+  let response = await fetch(url);
+  let json = await response.json();
+  //console.log(json);
+  return json;
 }
 
 

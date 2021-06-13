@@ -125,6 +125,7 @@ select{
     font-size: 2vw;
     top: 22vh;
     left: 38vw;
+    
 }
 
 #loginBorde{
@@ -134,7 +135,7 @@ select{
     width: 25vw;
     border: 1px solid black;
     background-color: #E8E8E8;
-    height: 32vh;
+    height: 40vh;
     z-index: 99;
 }
 

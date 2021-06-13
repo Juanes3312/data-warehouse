@@ -103,7 +103,7 @@ async function validarLogin(req, res, next) {
       return res.status(409)
         .send({
           status: 'Error',
-          mensaje: 'el contacto no existe o los datos son incorrectos'
+          mensaje: 'El contacto no existe o los datos son incorrectos'
         });
     }
   }
@@ -112,10 +112,9 @@ async function validarLogin(req, res, next) {
     return res.status(409)
       .send({
         status: 'Error',
-        mensaje: 'el contacto no existe'
+        mensaje: 'El contacto no existe'
       });
   }
-  return next();
 }
 
 server.post("/login", validarLogin, function (req, res) {
@@ -473,6 +472,17 @@ server.get("/ciudades/:id", (req, res) => {
       res.json(results);
     });
 })
+
+server.get("/ciudades", (req, res) => {
+  sequelize
+    .query("SELECT * FROM `ciudades`", {
+      type: sequelize.QueryTypes.SELECT
+    })
+    .then(results => {
+      //console.log(results, "soy result", id)
+      res.json(results);
+    });
+})
 //traer ciudad en especifico
 server.get("/ciudad/:id", (req, res) => {
   let {
@@ -491,17 +501,33 @@ server.get("/ciudad/:id", (req, res) => {
 //SECCION DE CONTACTOS
 
 server.get("/buscarContactos", (req, res) => {
-  console.log(req.query, "soy queriess ");
-  let {nombre, email , ciudad, compania, cargo, ciudadesArray} = req.query;
+  //console.log(req.query, "soy queriess ");
+  let {
+    nombre,
+    email,
+    ciudad,
+    compania,
+    cargo,
+    ciudadesArray
+  } = req.query;
   console.log(ciudadesArray, "ey bueno");
-
-  sequelize.query("SELECT * FROM `contactos` WHERE `nombre` = ? OR `email` = ? OR `id_ciudad` = ? OR `id_compania` = ? OR `cargo` = ? OR id_ciudad INS  (:ids)", {
-    replacements: [nombre, email, ciudad, compania, cargo, {ids:ciudadesArray}],
-    type: sequelize.QueryTypes.SELECT
-  })
-  .then(results =>{
-    res.json(results);
-  })
+  let ciudadesArrayConvertido = ciudadesArray.split(",");
+  let ciudadesArrayInt = ciudadesArrayConvertido.map(x => parseInt(x)) 
+  //console.log(ciudadesArrayInt, "ey bueno2");
+  sequelize.query("SELECT * FROM `contactos` WHERE `nombre` = :nom OR `email` = :ema OR `id_ciudad` = :ciu OR `id_compania` = :comp OR `cargo` = :car OR id_ciudad IN (:ids)", {
+      replacements: {
+        nom: nombre,
+        ema:email,
+        ciu : ciudad,
+        comp : compania,
+        car : cargo,
+        ids: ciudadesArrayInt
+      },
+      type: sequelize.QueryTypes.SELECT
+    })
+    .then(results => {
+      res.json(results);
+    })
 })
 
 server.get('/contactos', (req, res) => {

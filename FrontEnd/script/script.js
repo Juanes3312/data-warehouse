@@ -13,7 +13,8 @@ import {
   fetchContactos,
   fetchRegion,
   fetchContactosParams,
-  fetchPaisesSinRegion
+  fetchPaisesSinRegion,
+  fetchCiudadesSinPais
 } from "./Fetch/fetch.js"
 let iptPassword = document.getElementById("inputPassword");
 let btnIngresar = document.getElementById("btnIngresar");
@@ -78,8 +79,8 @@ async function BuscarContactos(palabraBuscar){
   let idCiudadEncontrado = 0;
   let idCompaniaEncontrado = 0;
   let idPaisEncontrado = 0;
-  let ciudadesArray = [];
-  let idDeCiudades;
+  let idCiudadEncontrada = 0;
+  let ciudadesArray = [0];
   let companias  = await fetchCompanias();
    for(let i = 0 ; i<companias.length; i++){
      //console.log(palabra, "ey mi loco soy la palabra");
@@ -100,17 +101,39 @@ async function BuscarContactos(palabraBuscar){
       console.log(ciudades , "ey bueno")
       for(let e = 0 ; e<ciudades.length; e++){
         //console.log(ciudades[e], "Soy ciudades[e]")
-    
         ciudadesArray.push(parseInt(ciudades[e].id));
       }
-      idDeCiudades = ciudadesArray.join(",")
       console.log(ciudadesArray, "soy ciudades", 1);
-
     }
   }
-  
-   fetchContactosParams('a', "as", "asdd" , idCompaniaEncontrado,"asdd", ciudadesArray)
+  let ciudades  = await fetchCiudadesSinPais();
+  for(let i = 0 ; i<ciudades.length; i++){
+    //console.log(palabra, "ey mi loco soy la palabra");
+    //console.log(companias[i].nombre, "ey mi loco soy la comp")
+    if(palabra == ciudades[i].nombre.toLowerCase()){
+      console.log("ey mi loco soy el id que buscas", ciudades[i].id);
+      idCiudadEncontrada = ciudades[i].id;
+    }
+  }
+
+   let fetchBuscar = await fetchContactosParams(palabra, palabra, idCiudadEncontrada , idCompaniaEncontrado, palabra, ciudadesArray);
+  let trContactos = document.getElementsByClassName("contacto");
+  for(let i = 0; i<trContactos.length; i++){
+    trContactos[i].innerHTML = null;
+  }
+  if(fetchBuscar.length === 0){
+    console.log("oe")
+    let caja = document.createElement('div');
+    container2.appendChild(caja);
+    caja.classList.add("contacto")
+    let p = document.createElement("p");
+    p.innerHTML = "no encontramos esos contactos";
+    caja.appendChild(p);
+  }
+   console.log(fetchBuscar, " si juego");
+   agregarContactos(fetchBuscar);
 }
+
 lupa.addEventListener("click", function(){
   console.log("oeoeoe")
   BuscarContactos(barraBusquedad.value)
@@ -198,7 +221,7 @@ for(let j = 0 ; j < companias.length; j++){
       let optPais = document.createElement("option");
       optPais.setAttribute("value", paises[i].id);
       optPais.setAttribute("class", "pais");
-      optPais.innerHTML = paises[i].nombre;
+      optPais.innerHTML = primeraLetraMayuscula(paises[i].nombre);
       iptPais.appendChild(optPais);
     }
   });
@@ -288,7 +311,16 @@ function Login(nombre, password) {
   }
   //console.log(parametros.body);
   fetch(`http://localhost:4000/login`, parametros)
-    .then(response => response.json())
+    .then(response => {
+      let json = response.json()
+      if (response.ok) {
+        return json
+      } else {
+        return json.then(err => {
+          throw err
+        })
+      }
+    })
     .then((data) => {
       console.log(data, " soy data");
       alertify.message('Bienvenido ' + nombre)
@@ -308,13 +340,14 @@ function Login(nombre, password) {
       }
     })
     .catch(error => {
-      console.log(error)
+      console.log(error);
+      alertify.alert(error.mensaje);
     })
 }
 
 
-async function agregarContactos() {
-  let contactos = await fetchContactos();
+async function agregarContactos(contactos) {
+  
   for (let i = 0; i < contactos.length; i++) {
     trContacto = document.createElement("tr");
     trContacto.setAttribute("data", contactos[i].id);
@@ -483,7 +516,7 @@ btnEditarUsuario.addEventListener("click", function(){
 
 
 
-agregarContactos();
+agregarContactos(await fetchContactos());
 
 btnCajaAggContacto.addEventListener("click", function () {
   cajaAggContacto.classList.remove("display-none")

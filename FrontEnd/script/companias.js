@@ -152,6 +152,11 @@ async function deleteCompanias(num) {
     document.location.reload();
   }
 
+  const primeraLetraMayuscula = (cadena) => {
+    const primerCaracter = cadena.charAt(0).toUpperCase();
+    const restoDeLaCadena = cadena.substring(1, cadena.length);
+    return primerCaracter.concat(restoDeLaCadena);
+  }
 
 btnAggCompania.addEventListener("click", async function () {
     cajaCompania.classList.remove("display-none");
@@ -188,13 +193,13 @@ async function agregarCompanias() {
         trCompania.setAttribute("data", companias[i].id);
         let tdNombre = document.createElement("td");
         tdNombre.setAttribute("id", "nombre");
-        tdNombre.innerHTML = companias[i].nombre;
+        tdNombre.innerHTML = primeraLetraMayuscula(companias[i].nombre);
         trCompania.appendChild(tdNombre);
         let tdPais = document.createElement("td");
         tdPais.setAttribute("id", "Pais");
         let pais = await fetchPais(companias[i].pais);
         for (e = 0; e < pais.length; e++) {
-            tdPais.innerHTML = pais[e].nombre;
+            tdPais.innerHTML = primeraLetraMayuscula( pais[e].nombre);
             trCompania.appendChild(tdPais);
         }
         let tdDireccion = document.createElement("td");
