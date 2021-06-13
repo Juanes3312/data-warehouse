@@ -23,3 +23,5 @@ node index || nodemon index
 
 
 Entras en el la carpeta frontEnd y abre el html llamado index, el usuario por defecto admin es "Juanes" y la contraseña es "123", y otro usuario NO admin es "acamica" y su contraseña es "123"
+
+El repositorio de github es este https://github.com/Juanes3312/data-warehouse.git
