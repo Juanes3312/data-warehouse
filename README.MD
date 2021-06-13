@@ -3,5 +3,7 @@
 ~~~~~~
 git clone https://github.com/Juanes3312/data-warehouse.git
 cd backend
-node index || nodemon index
 ~~~~~~
+
+
+node index || nodemon index
