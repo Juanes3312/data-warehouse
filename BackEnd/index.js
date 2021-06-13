@@ -55,10 +55,11 @@ async function isAdmin(req, res, next) {
 }
 
 function validartoken(req, res, next) {
+  const {
+    token
+  } = req.headers;
   try {
-    const {
-      token
-    } = req.headers;
+    
     console.log(token, "si valido");
     const validData = jwt.verify(token, signature);
     if (validData) {

@@ -16,8 +16,8 @@ let btnEditarUsuario = document.getElementById("btnEditarUsuario");
 let container = document.getElementById("container");
 let key = JSON.parse(sessionStorage.getItem("key"));
 console.log(cajaHeader)
-
 function guardarUsuarioDB(nombre, apellido, email, direccion, password, key) {
+  console.log(key);
   const nuevoUsuario = {
     "name": nombre,
     "apellido": apellido,
@@ -70,7 +70,7 @@ btnEnviarUsuario.addEventListener("click", async function () {
   let validacion = await CrearUsuarioValid();
   if (validacion) {
     try {
-      guardarUsuarioDB(iptNombre.value, iptApellido.value, iptEmail.value, iptDireccion.value, iptPassword.value)
+      guardarUsuarioDB(iptNombre.value, iptApellido.value, iptEmail.value, iptDireccion.value, iptPassword.value, key)
     } catch {
       console.log("no pase33333")
     }

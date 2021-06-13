@@ -2,10 +2,10 @@
 -- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jun 11, 2021 at 08:07 AM
--- Server version: 10.4.16-MariaDB
--- PHP Version: 7.4.12
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 13-06-2021 a las 02:57:16
+-- Versión del servidor: 10.4.16-MariaDB
+-- Versión de PHP: 7.4.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `data_warehouse`
+-- Base de datos: `data_warehouse`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ciudades`
+-- Estructura de tabla para la tabla `ciudades`
 --
 
 CREATE TABLE `ciudades` (
@@ -34,7 +34,7 @@ CREATE TABLE `ciudades` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `ciudades`
+-- Volcado de datos para la tabla `ciudades`
 --
 
 INSERT INTO `ciudades` (`id`, `pais_id`, `nombre`) VALUES
@@ -50,7 +50,7 @@ INSERT INTO `ciudades` (`id`, `pais_id`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `companias`
+-- Estructura de tabla para la tabla `companias`
 --
 
 CREATE TABLE `companias` (
@@ -61,12 +61,12 @@ CREATE TABLE `companias` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `companias`
+-- Volcado de datos para la tabla `companias`
 --
 
 INSERT INTO `companias` (`id`, `nombre`, `pais`, `direccion`) VALUES
 (2, 'globant', 1, 'carrera mejor'),
-(3, 'rappi', 2, 'cacorros'),
+(3, 'rappi', 2, 'carrera 1234'),
 (4, 'softtek', 6, 'Carrera xd'),
 (6, 'pintuco', 2, 'premium Plaza'),
 (7, 'mercado libre', 2, 'Carrera 777');
@@ -74,7 +74,7 @@ INSERT INTO `companias` (`id`, `nombre`, `pais`, `direccion`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `contactos`
+-- Estructura de tabla para la tabla `contactos`
 --
 
 CREATE TABLE `contactos` (
@@ -88,21 +88,22 @@ CREATE TABLE `contactos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `contactos`
+-- Volcado de datos para la tabla `contactos`
 --
 
 INSERT INTO `contactos` (`id`, `nombre`, `email`, `id_ciudad`, `id_compania`, `cargo`, `interes`) VALUES
-(1, 'Juan Esteban', 'juanes@jaramill.com', 3, 2, 'developer', 75),
+(1, 'juan esteban', 'juanes@jaramill.com', 3, 2, 'developer', 75),
 (2, 'andres', 'andres@moro.com', 5, 3, 'diseñador', 25),
 (3, 'alejandro', 'alejandro@noseuqe.com', 4, 4, 'cantante', 50),
 (5, 'jeronimo', 'jeronimo@skulls.com', 4, 6, 'ingeniero nanotecnologo', 50),
 (6, 'Maria Jose', 'mariajose@espisnosa.com', 2, 2, 'Nutricionista', 100),
-(7, 'samuel', 'samuel@g.com', 2, 7, 'ingeniero de sistemas', 75);
+(7, 'samuel', 'samuel@g.com', 2, 7, 'ingeniero de sistemas', 75),
+(8, 'Paula', 'paula@ramos.com', 3, 3, 'administradora', 75);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `paises`
+-- Estructura de tabla para la tabla `paises`
 --
 
 CREATE TABLE `paises` (
@@ -112,20 +113,20 @@ CREATE TABLE `paises` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `paises`
+-- Volcado de datos para la tabla `paises`
 --
 
 INSERT INTO `paises` (`id`, `region_id`, `nombre`) VALUES
-(1, 1, 'Argentina'),
-(2, 1, 'Colombia'),
-(4, 2, 'Estados unidos'),
-(5, 1, 'Peru'),
-(6, 2, 'Mexico');
+(1, 1, 'argentina'),
+(2, 1, 'colombia'),
+(4, 2, 'estados unidos'),
+(5, 1, 'peru'),
+(6, 2, 'mexico');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `regiones`
+-- Estructura de tabla para la tabla `regiones`
 --
 
 CREATE TABLE `regiones` (
@@ -134,7 +135,7 @@ CREATE TABLE `regiones` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `regiones`
+-- Volcado de datos para la tabla `regiones`
 --
 
 INSERT INTO `regiones` (`id`, `nombre`) VALUES
@@ -144,7 +145,7 @@ INSERT INTO `regiones` (`id`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usuarios`
+-- Estructura de tabla para la tabla `usuarios`
 --
 
 CREATE TABLE `usuarios` (
@@ -158,38 +159,36 @@ CREATE TABLE `usuarios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `usuarios`
+-- Volcado de datos para la tabla `usuarios`
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `email`, `direccion`, `password`, `admin`) VALUES
-(1, 'Juanes', 'Jaramillo', 'juanes@jaramillo.com', 'carrera 66', 0, 1),
+(1, 'Juanes', 'Jaramillo', 'juanes@jaramillo.com', 'carrera 66', 123, 1),
 (4, 'prueba', 'prueba', 'prueba@gmail.com', 'carrera xd', 1, 1),
-(8, '1', '1', '1', '1', 11, 0),
 (9, 'Sara', 'Rodriguez Ramos', 'sara@rodriguez.com', 'carrera 40b', 1234, 0),
 (10, 'felipe', 'Betancur', 'beta7@Hotmail.com', 'carrera 11', 1, 1),
-(11, '2', '2', '2', '2', 2, 0),
-(15, '2', '2', '3', '2', 2, 0),
-(16, 'Paula', 'Ramos', 'paula.gmail.com', 'carrera12', 1234, 0);
+(16, 'Paula', 'Ramos', 'paula.gmail.com', 'carrera12', 1234, 0),
+(17, 'Acamica', 'acamica', 'hola@acamica.com', 'argentina', 123, 0);
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `ciudades`
+-- Indices de la tabla `ciudades`
 --
 ALTER TABLE `ciudades`
   ADD PRIMARY KEY (`id`),
   ADD KEY `pais_id` (`pais_id`);
 
 --
--- Indexes for table `companias`
+-- Indices de la tabla `companias`
 --
 ALTER TABLE `companias`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `contactos`
+-- Indices de la tabla `contactos`
 --
 ALTER TABLE `contactos`
   ADD PRIMARY KEY (`id`),
@@ -197,83 +196,83 @@ ALTER TABLE `contactos`
   ADD KEY `id_compania` (`id_compania`);
 
 --
--- Indexes for table `paises`
+-- Indices de la tabla `paises`
 --
 ALTER TABLE `paises`
   ADD PRIMARY KEY (`id`),
   ADD KEY `region_id` (`region_id`);
 
 --
--- Indexes for table `regiones`
+-- Indices de la tabla `regiones`
 --
 ALTER TABLE `regiones`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `usuarios`
+-- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `ciudades`
+-- AUTO_INCREMENT de la tabla `ciudades`
 --
 ALTER TABLE `ciudades`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `companias`
+-- AUTO_INCREMENT de la tabla `companias`
 --
 ALTER TABLE `companias`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `contactos`
+-- AUTO_INCREMENT de la tabla `contactos`
 --
 ALTER TABLE `contactos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `paises`
+-- AUTO_INCREMENT de la tabla `paises`
 --
 ALTER TABLE `paises`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `regiones`
+-- AUTO_INCREMENT de la tabla `regiones`
 --
 ALTER TABLE `regiones`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `usuarios`
+-- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `ciudades`
+-- Filtros para la tabla `ciudades`
 --
 ALTER TABLE `ciudades`
   ADD CONSTRAINT `ciudades_ibfk_1` FOREIGN KEY (`pais_id`) REFERENCES `paises` (`id`);
 
 --
--- Constraints for table `contactos`
+-- Filtros para la tabla `contactos`
 --
 ALTER TABLE `contactos`
   ADD CONSTRAINT `contactos_ibfk_1` FOREIGN KEY (`id_ciudad`) REFERENCES `ciudades` (`id`),
   ADD CONSTRAINT `contactos_ibfk_2` FOREIGN KEY (`id_compania`) REFERENCES `companias` (`id`);
 
 --
--- Constraints for table `paises`
+-- Filtros para la tabla `paises`
 --
 ALTER TABLE `paises`
   ADD CONSTRAINT `paises_ibfk_1` FOREIGN KEY (`region_id`) REFERENCES `regiones` (`id`);
